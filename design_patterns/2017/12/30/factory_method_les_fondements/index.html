@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Factory Method — Les Fondements &#8211; Le blog de Roukmoute</title>
+    <link rel="dns-prefetch" href="//maxcdn.bootstrapcdn.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Ce Pattern est utilisé dans toute la littérature sur les Patterns.">
+    <meta name="robots" content="all">
+    <meta name="author" content="Mathias STRASSER">
+    
+    <meta name="keywords" content="design_patterns">
+    <link rel="canonical" href="http://roukmoute.github.io/design_patterns/2017/12/30/factory_method_les_fondements/">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for Le blog de Roukmoute" href="/feed.xml" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?202502271813" type="text/css">
+    <link rel="stylesheet" href="/css/syntax.css?202502271813" type="text/css">
+    <link rel="stylesheet" href="/css/custom.css?202502271813" type="text/css">
+
+    <!-- Fonts -->
+    
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300' rel='stylesheet' type='text/css'>
+    
+    
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    
+
+    <!-- MathJax -->
+    
+
+    <!-- Verifications -->
+    
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="fr_FR">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Factory Method — Les Fondements">
+    <meta property="og:description" content="Je blogue sur la programmation orientée objet, PHP, bonnes pratiques, etc. ; au moins un nouveau billet chaque semaine">
+    <meta property="og:url" content="http://roukmoute.github.io/design_patterns/2017/12/30/factory_method_les_fondements/">
+    <meta property="og:site_name" content="Le blog de Roukmoute">
+    
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+        <meta name="twitter:site" content="@roukmouteFr" />
+        <meta name="twitter:creator" content="@roukmouteFr" />
+    
+    <meta name="twitter:title" content="Factory Method — Les Fondements" />
+    <meta name="twitter:description" content="Ce Pattern est utilisé dans toute la littérature sur les Patterns." />
+    <meta name="twitter:url" content="http://roukmoute.github.io/design_patterns/2017/12/30/factory_method_les_fondements/" />
+    
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+
+    
+</head>
+
+<body class="site">
+  
+	
+
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="http://roukmoute.github.io" class="site-title">Le blog de Roukmoute</a>
+      <nav class="site-nav">
+        
+
+
+
+    
+    
+    
+    
+        <a href="/about/">À propos de moi</a>
+    
+
+    
+
+
+      </nav>
+      <div class="clearfix"></div>
+      
+        <div class="social-icons">
+  <div class="social-icons-right">
+    
+      <a class="fa fa-github" href="https://github.com/roukmoute"></a>
+    
+    
+    <a class="fa fa-reddit" href="https://reddit.com/user/roukmoute"></a>
+    
+    
+    
+      <a class="fa fa-stack-overflow" href="https://stackoverflow.com/users/714996"></a>
+    
+    <a class="fa fa-rss" href="/feed.xml"></a>
+    
+      <a class="fa fa-twitter" href="https://twitter.com/roukmouteFr"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-envelope" href="mailto:contact@roukmoute.fr"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-telegram" href="https://t.me/Roukmoute"></a>
+    
+    
+  </div>
+  <div class="right">
+    
+    
+    
+  </div>
+</div>
+<div class="clearfix"></div>
+
+      
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>Factory Method — Les Fondements</h1>
+  <span class="post-meta">30/12/2017</span><br>
+  
+  <span class="post-meta small">
+  
+    temps de lecture ≈10 min
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <h3 id="définition-du-gof">Définition du GoF</h3>
+
+<p>Définir une interface pour créer un objet, mais laisser les sous-classes 
+décider de la classe à instancier.
+Factory Method permet à une classe de différer l’instanciation à des 
+sous-classes.</p>
+
+<p>Bon pour la définition, c’est fait.</p>
+
+<h3 id="lessence-de-la-factory-method">L’essence de la Factory Method</h3>
+
+<p>Comprenons le schéma de la Factory Method (Méthode Usine) en regardant 
+quelques classes de vignobles, parce que comprendre avec du bon vin, c’est tout 
+aussi bien.<br />
+Nous allons commencer avec notre classe simple ici appelée <code class="language-plaintext highlighter-rouge">GrapeVariety</code> 
+(la traduction du mot cépage) et il a une méthode appelée <code class="language-plaintext highlighter-rouge">produceWine()</code>, qui 
+retourne un vin “standard”.<br />
+Ensuite, nous avons un <code class="language-plaintext highlighter-rouge">Riesling</code> qui a sa propre méthode <code class="language-plaintext highlighter-rouge">produceWine()</code>.<br />
+Ce cépage produit uniquement… du Riesling.<br />
+Donc cette classe passe outre la méthode <code class="language-plaintext highlighter-rouge">produceWine()</code> de la classe parent 
+pour retourner un vin blanc.</p>
+
+<p>Il passe outre <code class="language-plaintext highlighter-rouge">produceWine()</code> et à ce stade, nous pourrions déjà dire que 
+<code class="language-plaintext highlighter-rouge">produceWine()</code> est une Factory Method :</p>
+
+<ul>
+  <li>Il existe dans la classe parente qui retourne un cépage par défaut.</li>
+  <li>Et il existe dans la sous-classe qui l’emporte sur la classe parent.</li>
+</ul>
+
+<p>Voici une autre sous-classe de <code class="language-plaintext highlighter-rouge">GrapeVariety</code>; <code class="language-plaintext highlighter-rouge">AlsaceGrapeVarieties</code>.<br />
+<code class="language-plaintext highlighter-rouge">AlsaceGrapeVarieties</code> produit plusieurs sortes de cépages alsaciens différents.<br />
+Donc il produit la méthode <code class="language-plaintext highlighter-rouge">produceWine()</code> qui peut retourner soit un 
+<code class="language-plaintext highlighter-rouge">Sylvaner</code>, un <code class="language-plaintext highlighter-rouge">Gewurtztraminer</code> ou n’importe quel type de vin alsacien.<br />
+Ainsi, selon votre préférence, vous pouvez obtenir l’un ou l’autre.<br />
+Mais ce qu’il faut retenir c’est que la classe <code class="language-plaintext highlighter-rouge">AlsaceGrapeVarieties</code> peut 
+produire différentes sortes de cépages.
+Ce sont tous des cépages !<br />
+C’est important parce que le type de retour de <code class="language-plaintext highlighter-rouge">produceWine()</code> est un vin.</p>
+
+<p>Et que chaque vin qui est renvoyé via la Factory Method à partir de la méthode 
+<code class="language-plaintext highlighter-rouge">produceWine()</code> doit obéir à ce contrat.<br />
+Et ce doit être une sous-classe du cépage “standard” ou implémenter une 
+interface du cépage.<br />
+C’est donc un modèle de la Factory Method.<br />
+C’est une méthode qui fait de la création.<br />
+Elle existe dans une hiérarchie.<br />
+Dans le code une hiérarchie est pyramidale, tout en haut, nous avons le plus 
+abstrait, donc une interface ou une classe abstraite par exemple, puis on 
+descend jusqu’au plus concret.<br />
+Plus on descend dans les niveaux, plus la classe est plus précise que son 
+précédent.<br />
+C’est soit abstrait, soit une interface.<br />
+Ainsi, <code class="language-plaintext highlighter-rouge">produceWine()</code> n’a pas besoin de renvoyer une valeur par défaut, cela 
+pourrait simplement être un commandement pour les sous-classes de déclarer et 
+d’implémenter une méthode <code class="language-plaintext highlighter-rouge">produceWine()</code>.<br />
+Et c’est tout.<br />
+Nous avons donc une création <a href="/programmation/2017/12/23/polymorphisme/">polymorphe</a> 
+de cépages et ceci est une Factory Method.</p>
+
+<p>Le concept de hiérarchie et de polymorphisme est important !<br />
+C’est, en effet, ce qui permettra de faire la distinction avec le Design 
+Pattern Template Method.<br />
+Nous verrons ce Pattern plus tard, il est inutile pour la suite de cet article.</p>
+
+<h3 id="les-variations">Les variations</h3>
+
+<p>Ce pattern peut être fait de plusieurs manières.<br />
+Nous allons voir 3 implémentations de possibles, histoire de bien faire le tour.</p>
+
+<h4 id="les-participants">Les participants</h4>
+
+<p>Je vais utiliser le même concept fourni que dans le GoF pour ce qui est des 
+“participants”.</p>
+
+<p>Les participants ce sont les classes et/ou les objets participant au Design 
+Pattern et leurs responsabilités.</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">Consommateur</code> — L’objet qui veut créer un nouveau <code class="language-plaintext highlighter-rouge">Produit</code>.</li>
+  <li><code class="language-plaintext highlighter-rouge">Produit</code> — L’objet qui est créé et livré au <code class="language-plaintext highlighter-rouge">Consommateur</code>.</li>
+  <li><code class="language-plaintext highlighter-rouge">Producer</code> — L’objet qui fabrique le <code class="language-plaintext highlighter-rouge">Produit</code>. Cet objet peut être une 
+interface ou une classe abstraite au sein d’une hiérarchie.</li>
+  <li><code class="language-plaintext highlighter-rouge">Factory Method</code> — La méthode <a href="/programmation/2017/12/23/polymorphisme/">polymorphe</a> 
+dans une hiérarchie de classe qui retourne le <code class="language-plaintext highlighter-rouge">Produit</code>.</li>
+</ul>
+
+<h4 id="implémentation-par-défaut">Implémentation par défaut</h4>
+
+<p><img src="/images/factory_method_les_fondements/default_implementation.svg" alt="Implémentation par défaut" /></p>
+
+<p>Sur ce schéma, l’implémentation par défaut est avec une classe <code class="language-plaintext highlighter-rouge">Creator</code> qui 
+fournit une implémentation par défaut (<code class="language-plaintext highlighter-rouge">ConcreteProduct</code>) pour la Factory 
+Method, tandis que <code class="language-plaintext highlighter-rouge">ConcreteCreator</code> remplace l’implémentation 
+(<code class="language-plaintext highlighter-rouge">AnotherConcreteProduct</code>) par défaut.</p>
+
+<h4 id="lorsque-la-factory-method-est-abstraite">Lorsque la Factory Method est abstraite</h4>
+
+<p><img src="/images/factory_method_les_fondements/factory_method_is_abstract.svg" alt="la Factory Method est abstraite" /></p>
+
+<p>Ici très peu de changement par rapport au schéma précédent.<br />
+La Factory Method est déclarée comme abstraite dans <code class="language-plaintext highlighter-rouge">Creator</code> et <code class="language-plaintext highlighter-rouge">Produit</code> est 
+abstrait.<br />
+Ceci permet à la méthode <code class="language-plaintext highlighter-rouge">AnOperation()</code> de fournir une instanciation 
+<a href="/programmation/2017/12/23/polymorphisme/">polymorphe</a> du produit.<br />
+<strong>Il ne faut pas confondre cela avec l’Abstract Factory.</strong></p>
+
+<h4 id="factory-method-paramétrée">Factory Method paramétrée</h4>
+
+<figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="kd">class</span> <span class="nc">Database</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="n">create</span><span class="p">(</span><span class="kt">string</span> <span class="nv">$database</span><span class="p">):</span> <span class="err">\</span><span class="no">PDO</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$database</span> <span class="o">===</span> <span class="s1">'mysql'</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="k">new</span> <span class="nc">DatabaseMySql</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$database</span> <span class="o">===</span> <span class="s1">'pgsql'</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="k">new</span> <span class="nc">DatabasePostgreSQL</span><span class="p">();</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">class</span> <span class="nc">CommercialDatabase</span> <span class="kd">extends</span> <span class="nc">Database</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="n">create</span><span class="p">(</span><span class="kt">string</span> <span class="nv">$database</span><span class="p">):</span> <span class="err">\</span><span class="no">PDO</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$database</span> <span class="o">===</span> <span class="s1">'microsoft'</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="k">new</span> <span class="nc">SQLServer</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$database</span> <span class="o">===</span> <span class="s1">'oracle'</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="k">new</span> <span class="nc">Database12c</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="k">parent</span><span class="o">::</span><span class="nf">create</span><span class="p">(</span><span class="nv">$database</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Dans ce cas, la Factory Method prend un paramètre qui l’aide à sélectionner 
+la <code class="language-plaintext highlighter-rouge">Base de données</code> obtenue.<br />
+Ce dernier cas est un des plus connu et utilisé.<br />
+Si le paramètre passé à la Factory Method n’aide pas à la sélection de la 
+<code class="language-plaintext highlighter-rouge">Base de données</code>, elle ne serait techniquement pas appelée 
+“Factory Method paramétrée”.</p>
+
+<h3 id="résumé">Résumé</h3>
+
+<p>Voici donc un petit résumé pour remettre tout dans le bon ordre histoire 
+d’avoir bien compris ce Pattern.</p>
+
+<p>Une Factory Method est, par définition, <a href="/programmation/2017/12/23/polymorphisme/">polymorphe</a>.<br />
+Si elle n’était pas <a href="/programmation/2017/12/23/polymorphisme/">polymorphe</a>, nous l’appellerions probablement 
+<code class="language-plaintext highlighter-rouge">Creation Method</code> (encore une fois c’est un Pattern que nous verrons plus tard).</p>
+
+<p>Comme nous avons pu le voir avec l’implémentation par défaut, il n’est pas 
+nécessaire d’utiliser une méthode abstraite pour implémenter une Factory Method.<br />
+Bien que la hiérarchie soit une caractéristique de la Factory Method, il est 
+possible de fournir un <code class="language-plaintext highlighter-rouge">Produit</code> par défaut, épargnant ainsi aux sous-classes 
+qui n’ont pas besoin de passer outre à la nécessité de spécifier l’une des leurs.</p>
+
+<p>Une Factory Method peut créer un seul objet et même un agrégat d’objets.<br />
+Tandis qu’une Factory Method renvoie un seul objet, cet objet peut contenir des 
+objets supplémentaires accessibles à travers les champs de la nouvelle 
+instance.<br />
+En effet, le <code class="language-plaintext highlighter-rouge">Produit</code> peut être un agrégat élaboré, comme un arbre ou une 
+collection.</p>
+
+<p>Si une Factory Method prend un paramètre, c’est n’est PAS par définition une 
+“Factory Method paramétrée”.<br />
+N’importe quelle Factory Method peut prendre des paramètres qui remplissent le 
+même rôle que ceux d’un constructeur, c’est-à-dire aider à décider comment 
+remplir les champs de la nouvelle instance.<br />
+Ce n’est que dans les cas où le paramètre est utilisé pour déterminer le type 
+réel du <code class="language-plaintext highlighter-rouge">Produit</code> retourné que nous nous référons à la Factory Method comme 
+étant une “Factory Method paramétrée”.</p>
+
+<p>Une fois qu’une méthode devient statique, elle ne peut pas être une Factory 
+Method puisque les Factory Methods sont implémentées en utilisant l’héritage 
+et que vous n’obtenez pas d’héritage avec les méthodes statiques.</p>
+
+<h3 id="comment-la-factory-method-favorise-t-elle-un-code-à-couplage-faible-">Comment la Factory Method favorise-t-elle un code à couplage faible ?</h3>
+
+<p>Une Factory Method peut reporter la création de l’objet à une sous-classe, ce 
+qui permet un couplage faible, aucune statique ne doit rentrer en jeu, sinon 
+cela s’appelle une Creation Method.<br />
+Une Factory Method ne permet pas au consommateur de créer une “famille de 
+produits”.<br />
+Il s’agit de l’<code class="language-plaintext highlighter-rouge">Abstract Factory Pattern</code>.<br />
+La plupart des implémentations de la méthode Factory Method ont tendance à 
+fonctionner avec un seul produit (pas avec une famille de produits), et 
+que ce seul produit a souvent plusieurs implémentations concrètes.<br />
+Le code client qui appelle la Factory Method est faiblement couplé au code qui 
+crée et retourne un objet, parce que le client n’a pas besoin de se soucier de 
+quelle sous-classe est appelée.</p>
+
+<h3 id="conclusion">Conclusion</h3>
+
+<p>Bon… Pour la théorie, c’est maintenant fini :)<br />
+Je suis bien plus pour la pratique, mais je pense qu’un petit peu de théorie 
+est tout de même important pour mieux comprendre ce que l’on va faire par la 
+suite.<br />
+Pour ce qui est de la pratique, cela se fera en plusieurs articles, chaque 
+article étant un cas concret.<br />
+Non pas qu’il soit difficile, comme vous venez de le voir, mais je pense que 
+plus il y a d’exemples disponibles, mieux c’est.</p>
+
+<p>À l’année prochaine !</p>
+
+</article>
+
+
+
+
+
+
+
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname  = 'roukmoute';
+    var disqus_identifier = '/design_patterns/2017/12/30/factory_method_les_fondements';
+    var disqus_title      = "Factory Method — Les Fondements";
+
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+    <small>
+      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
+      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">GitHub</a>.
+    </small>
+  </div>
+</footer>
+
+
+</body>
+</html>

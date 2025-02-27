@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Introduction à la SPL &#8211; Le blog de Roukmoute</title>
+    <link rel="dns-prefetch" href="//maxcdn.bootstrapcdn.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Les structures de données de la bibliothèque PHP standard">
+    <meta name="robots" content="all">
+    <meta name="author" content="Mathias STRASSER">
+    
+    <meta name="keywords" content="php, spl">
+    <link rel="canonical" href="http://roukmoute.github.io/php/spl/2017/12/16/introduction_a_la_SPL/">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for Le blog de Roukmoute" href="/feed.xml" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?202502271813" type="text/css">
+    <link rel="stylesheet" href="/css/syntax.css?202502271813" type="text/css">
+    <link rel="stylesheet" href="/css/custom.css?202502271813" type="text/css">
+
+    <!-- Fonts -->
+    
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300' rel='stylesheet' type='text/css'>
+    
+    
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    
+
+    <!-- MathJax -->
+    
+
+    <!-- Verifications -->
+    
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="fr_FR">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Introduction à la SPL">
+    <meta property="og:description" content="Je blogue sur la programmation orientée objet, PHP, bonnes pratiques, etc. ; au moins un nouveau billet chaque semaine">
+    <meta property="og:url" content="http://roukmoute.github.io/php/spl/2017/12/16/introduction_a_la_SPL/">
+    <meta property="og:site_name" content="Le blog de Roukmoute">
+    
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+        <meta name="twitter:site" content="@roukmouteFr" />
+        <meta name="twitter:creator" content="@roukmouteFr" />
+    
+    <meta name="twitter:title" content="Introduction à la SPL" />
+    <meta name="twitter:description" content="Les structures de données de la bibliothèque PHP standard" />
+    <meta name="twitter:url" content="http://roukmoute.github.io/php/spl/2017/12/16/introduction_a_la_SPL/" />
+    
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+
+    
+</head>
+
+<body class="site">
+  
+	
+
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="http://roukmoute.github.io" class="site-title">Le blog de Roukmoute</a>
+      <nav class="site-nav">
+        
+
+
+
+    
+    
+    
+    
+        <a href="/about/">À propos de moi</a>
+    
+
+    
+
+
+      </nav>
+      <div class="clearfix"></div>
+      
+        <div class="social-icons">
+  <div class="social-icons-right">
+    
+      <a class="fa fa-github" href="https://github.com/roukmoute"></a>
+    
+    
+    <a class="fa fa-reddit" href="https://reddit.com/user/roukmoute"></a>
+    
+    
+    
+      <a class="fa fa-stack-overflow" href="https://stackoverflow.com/users/714996"></a>
+    
+    <a class="fa fa-rss" href="/feed.xml"></a>
+    
+      <a class="fa fa-twitter" href="https://twitter.com/roukmouteFr"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-envelope" href="mailto:contact@roukmoute.fr"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-telegram" href="https://t.me/Roukmoute"></a>
+    
+    
+  </div>
+  <div class="right">
+    
+    
+    
+  </div>
+</div>
+<div class="clearfix"></div>
+
+      
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>Introduction à la SPL</h1>
+  <span class="post-meta">16/12/2017</span><br>
+  
+  <span class="post-meta small">
+  
+    temps de lecture ≈5 min
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <h3 id="introduction">Introduction</h3>
+
+<p>La plupart du temps, le développement en PHP consiste à récupérer et traiter 
+des données d’une source ou d’une autre, comme une base de données, des 
+fichiers locaux, une API distante, etc. En tant que tels, les développeurs 
+passent beaucoup de temps à obtenir, organiser, déplacer et manipuler ces 
+données.<br />
+Dans certains cas, un tableau ne suffira pas à réduire l’utilisation et les 
+performances de la mémoire et donc de meilleures structures de données sont 
+nécessaires.<br />
+Aussi, avec tant de discussion et de concentration sur les frameworks 
+(cette page pourrait être remplie avec des noms de frameworks PHP !), vous ne 
+pouvez pas connaitre parfaitement tous les frameworks.<br />
+Ils se développent et changent à une vitesse folle.<br />
+Il existe beaucoup de frameworks, même si actuellement seuls quelques un ont 
+réussi à se démarquer comme Symfony, Laravel ou encore Zend.<br />
+Aussi, si vous n’en aviez jamais utilisé, vous n’allez pas pouvoir sortir du 
+lot rapidement dans ce domaine.</p>
+
+<p>Un secteur sur lequel il faut se concentrer, et où vous êtes raisonnablement 
+sûr qu’un expert PHP aura la familiarité, est dans la manipulation et la 
+composition générale de la bibliothèque standard PHP (SPL).<br />
+Si vous avez une solide formation dans cette discipline, vos chances de succès 
+pour avoir un travail seront bien plus grandes.<br />
+Et vous pourrez vous adapter et comprendre bien plus vite les frameworks 
+actuels, qui utilisent énormément la SPL dans leur cœur.<br />
+Plus précisément, vous devriez être familier avec une partie ou l’ensemble 
+des neuf structures de données SPL énumérées dans le Manuel PHP.<br />
+Beaucoup offrent des possibilités très similaires les unes aux autres, mais les 
+légères variations rendent chacune d’entre elles plus parfaitement adaptée à un 
+usage particulier.<br />
+Nous étudierons toute la SPL de long en large, les neuf structurent des 
+données, les itérateurs, etc.<br />
+Cependant, l’un des gros problèmes de la SPL est sa documentation qui n’incite 
+pas à l’utiliser tellement elle est austère et en manque d’exemples.<br />
+Après avoir lu cette partie, vous serez prêt pour manipuler les interfaces SPL, 
+les neuf structures de données et bien sûr les itérateurs.</p>
+
+<h3 id="que-propose-la-spl-">Que propose la SPL ?</h3>
+
+<p>Nous allons maintenant voir ce que propose la SPL pour les structures de 
+données.<br />
+Il en existe neuf, que nous analyserons tout au long des prochains articles.</p>
+
+<p>Mais qu’apportent-elles de nouveau par rapport à nos tableaux ?</p>
+
+<p>Et bien dans l’absolu… rien.
+Oui oui, vous avez bien lu, vous pouvez faire exactement la même chose avec de 
+simples tableaux.<br />
+En revanche si elles sont là, ce n’est pas non plus pour faire de la 
+décoration, leur utilité va se trouver au niveau des ressources dans votre 
+application.</p>
+
+<h3 id="mais-au-fait-quest-ce-quune-structure-de-données-">Mais au fait, qu’est-ce qu’une structure de données ?</h3>
+
+<p>Avant tout, une structure de données est un moyen de stocker et d’organiser les 
+données, qu’on appelle élément, dans la mémoire afin qu’elles puissent être 
+utilisées avantageusement.<br />
+L’efficacité signifie qu’ils peuvent être rapides à récupérer ou encore à 
+mettre à jour ou qu’ils peuvent être puissants en ce qui concerne l’utilisation 
+de la mémoire.</p>
+
+<p>Un tableau par exemple est quelque chose de très manipulable, mais pas 
+forcément l’élément le plus léger pour accéder où écrire des données.</p>
+
+<p>C’est là où ces structures rentrent en jeu.</p>
+
+<p>Certaines vont être capables d’aller vite en lecture, d’autres bien plus 
+rapides en écriture, d’autres seront aptes de se maintenir à un certain seuil en 
+mémoire et d’autre encore seront rapide en écriture et lecture, mais au prix 
+d’un plus gros tampon nécessaire.</p>
+
+<p>Apprenez à les manipuler et les performances de votre application iront bien 
+mieux qu’avec de simples tableaux.</p>
+
+<p>Toutes les structures implémentent au minimum <code class="language-plaintext highlighter-rouge">Iterator</code> et <code class="language-plaintext highlighter-rouge">Countable</code>.
+Ce qui veut dire que l’on peut donc toutes les compter (via un modeste 
+<code class="language-plaintext highlighter-rouge">count()</code>) ou bien les parcourir (en utilisant <code class="language-plaintext highlighter-rouge">foreach()</code>), exactement comme 
+array.</p>
+
+<p>Alors à très vite pour voir ensemble <code class="language-plaintext highlighter-rouge">SplDoublyLinkedList</code> !</p>
+
+</article>
+
+
+
+
+
+
+
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname  = 'roukmoute';
+    var disqus_identifier = '/php/spl/2017/12/16/introduction_a_la_SPL';
+    var disqus_title      = "Introduction à la SPL";
+
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+    <small>
+      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
+      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">GitHub</a>.
+    </small>
+  </div>
+</footer>
+
+
+</body>
+</html>

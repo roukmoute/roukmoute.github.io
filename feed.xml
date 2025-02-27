@@ -1,0 +1,1229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Le blog de Roukmoute</title>
+    <description>Je blogue sur la programmation orientée objet, PHP, bonnes pratiques, etc. ; au moins un nouveau billet chaque semaine</description>
+    <link>http://roukmoute.github.io/</link>
+    <atom:link href="http://roukmoute.github.io/feed.xml" rel="self" type="application/rss+xml" />
+    
+      <item>
+        <title>Nouvelle version</title>
+        <description>&lt;div class=&quot;language-custom_php highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;attribute&quot;&gt;#[Route(&apos;/posts_by/{author_id}&apos;)]&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;authorPosts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+    &lt;span class=&quot;attribute&quot;&gt;#[MapEntity(class: Post::class, expr: &apos;repository.findBy({&quot;author&quot;: author_id}, {}, 10)&apos;)]&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;iterable&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$posts&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Response&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</description>
+        <pubDate>Wed, 01 Jan 2025 00:00:00 +0100</pubDate>
+        <link>http://roukmoute.github.io/design_pattern/php/2025/01/01/test/</link>
+        <guid isPermaLink="true">http://roukmoute.github.io/design_pattern/php/2025/01/01/test/</guid>
+      </item>
+    
+      <item>
+        <title>Factory Method — Exemple de code</title>
+        <description>&lt;p&gt;Voici la suite de &lt;a href=&quot;/design_patterns/2017/12/30/factory_method_les_fondements/&quot;&gt;cet article&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/roukmoute/design-patterns/tree/master/Creational/FactoryMethod/Gof&quot;&gt;L’exemple suivant&lt;/a&gt; 
+enseigne le modèle de la Factory Method telle qu’elle est expliquée dans le Gof.&lt;/p&gt;
+
+&lt;p&gt;Cet exemple montre comment une pseudo-suite d’applications de bureautique peut 
+partager du code et reporter les décisions de création à des sous-classes.&lt;/p&gt;
+
+&lt;p&gt;Parmi les &lt;a href=&quot;https://github.com/roukmoute/design-patterns/blob/master/Creational/FactoryMethod/Gof/Application.php&quot;&gt;Applications&lt;/a&gt; 
+de cette suite il y a :&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/roukmoute/design-patterns/blob/master/Creational/FactoryMethod/Gof/SpreadsheetApplication.php&quot;&gt;SpreedSheetApplication&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/roukmoute/design-patterns/blob/master/Creational/FactoryMethod/Gof/EditorApplication.php&quot;&gt;EditorApplication&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Naturellement pour chaque application de la suite, il y a un type de &lt;a href=&quot;https://github.com/roukmoute/design-patterns/blob/master/Creational/FactoryMethod/Gof/Document.php&quot;&gt;Document&lt;/a&gt; 
+correspondant :&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/roukmoute/design-patterns/blob/master/Creational/FactoryMethod/Gof/SpreadsheetDocument.php&quot;&gt;SpreasheetDocument&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/roukmoute/design-patterns/blob/master/Creational/FactoryMethod/Gof/EditorDocument.php&quot;&gt;EditorDocument&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;la hiérarchie de l’application ressemble à ceci :
+&lt;img src=&quot;https://user-images.githubusercontent.com/2140469/36077136-096a05a4-0f67-11e8-8f1c-26ea90759224.png&quot; alt=&quot;application_hierarchy&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Nous avons notre application générique abstraite ainsi que les sous-classes 
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;EditorApplication&lt;/code&gt; et &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SpreadsheetApplication&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;En effet il peut arriver d’avoir beaucoup de code en commun.&lt;br /&gt;
+Du coup l’utilisation d’une classe parente prend tout son sens.&lt;br /&gt;
+Pour rappel, cette classe peut être abstraite ou non si un comportement par 
+défaut est mis en place.&lt;br /&gt;
+Ainsi on ne laisse que les méthodes qui se distinguent dans les sous-classes.&lt;/p&gt;
+
+&lt;p&gt;Mais comment s’assurer que pour chaque sous-classe d’application, le type de 
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Document&lt;/code&gt; est correctement est créé ?&lt;/p&gt;
+
+&lt;p&gt;Voici comment faire :&lt;br /&gt;
+Dans la classe &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Application&lt;/code&gt;, on définit une &lt;a href=&quot;https://github.com/roukmoute/design-patterns/blob/master/Creational/FactoryMethod/Gof/Application.php#L18&quot;&gt;méthode abstraite&lt;/a&gt;, 
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;createDocument()&lt;/code&gt;, qui est chargée de s’assurer que les sous-classes créées, 
+ont le bon type de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Document&lt;/code&gt; lorsqu’ils implémentent leur copie de 
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;createDocument()&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Par exemple, dans &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;EditorApplication&lt;/code&gt;, l’implémentation de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;createDocument()&lt;/code&gt; 
+renvoie un nouveau document &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;EditorDocument&lt;/code&gt;.&lt;br /&gt;
+De même, l’implémentation de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;createDocument()&lt;/code&gt; par &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SpreadsheetApplication&lt;/code&gt; 
+renverra un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SpreadsheetDocument&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;En appliquant la puissance du &lt;a href=&quot;/programmation/2017/12/23/polymorphisme/&quot;&gt;polymorphisme&lt;/a&gt;, 
+nous avons veillé à ce que chaque sous-classe d’application renvoie 
+correctement la sous-classe &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Document&lt;/code&gt; correspondante.&lt;/p&gt;
+</description>
+        <pubDate>Sun, 11 Feb 2018 00:00:00 +0100</pubDate>
+        <link>http://roukmoute.github.io/design_pattern/php/2018/02/11/factory_method_exemple/</link>
+        <guid isPermaLink="true">http://roukmoute.github.io/design_pattern/php/2018/02/11/factory_method_exemple/</guid>
+      </item>
+    
+      <item>
+        <title>Fondements des principes SOLID — Partie 1</title>
+        <description>&lt;p&gt;On nous parle souvent de faire un code SOLID.&lt;br /&gt;
+Mais au fait, de quoi s’agit-il ?&lt;/p&gt;
+
+&lt;p&gt;Cet article étant long, j’ai décidé de le couper en deux.&lt;br /&gt;
+Cela peut paraitre long, mais je pense que savoir comment est né l’acronyme 
+SOLID est important.&lt;br /&gt;
+Il n’y a que de la théorie dans cet article.&lt;br /&gt;
+Bonne lecture.&lt;/p&gt;
+
+&lt;h3 id=&quot;comment-est-née-lidée-&quot;&gt;Comment est née l’idée ?&lt;/h3&gt;
+
+&lt;p&gt;L’acronyme SOLID est né de &lt;a href=&quot;https://www.r7krecon.com/legacy-code&quot;&gt;Michael Feathers&lt;/a&gt; et &lt;a href=&quot;http://blog.cleancoder.com/&quot;&gt;Robert C. Martin&lt;/a&gt;.&lt;br /&gt;
+Leur idée est venue de Jack Reeves qui a publié un article intitulé 
+&lt;a href=&quot;https://www.developerdotstar.com/mag/articles/reeves_design.html&quot;&gt;« What Is Software Design? »&lt;/a&gt;&lt;br /&gt;
+La question principale étant : « Que produisent les ingénieurs ? »&lt;br /&gt;
+Réponse: Les ingénieurs produisent des documents qui décrivent comment 
+concevoir des produits.&lt;/p&gt;
+
+&lt;p&gt;Cela est vrai dans bien des domaines :&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Les architectes en bâtiment produisent des documents, des plans, des schémas 
+de construction qui décrivent comment concevoir un bâtiment.&lt;/li&gt;
+  &lt;li&gt;Les ingénieurs en électronique produisent des schémas de circuit électriques 
+qui décrivent comment concevoir une carte de circuit imprimé.&lt;/li&gt;
+  &lt;li&gt;Les ingénieurs mécaniciens produisent des documents de dessins mécaniques qui 
+décrivent comment concevoir les machines.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Et pour ce qui est du développement de logiciel, le seul document produit par 
+les ingénieurs logiciels qui est suffisamment détaillé pour spécifier un 
+produit logiciel est le code source.&lt;br /&gt;
+Les autres documents, comme les diagrammes UML, cahier des charges, où tout 
+autre document servant à écrire le code source n’en fait pas partie.&lt;br /&gt;
+Ils servent à déterminer le code source, pas à produire le document.&lt;br /&gt;
+Le document finalisé chez nous sera un binaire ou un site Internet.&lt;br /&gt;
+Le code source en est donc la conception.&lt;/p&gt;
+
+&lt;p&gt;Et c’est là où il y a une conclusion très intéressante entre les ingénieurs 
+logiciels et les autres ingénieurs cités précédemment.&lt;br /&gt;
+Dans les exemples précédents, nous passons beaucoup de temps à concevoir le 
+document, car le coût de leur conception est beaucoup moins élevé que celui 
+de la construction.&lt;br /&gt;
+Et le coût de la correction des erreurs une fois la conception terminée et la 
+production commencée est énorme.&lt;br /&gt;
+Mais dans le logiciel, c’est tout l’inverse, il est bien moins astronomique de 
+construire le produit qu’il ne l’est de le concevoir et de corriger les erreurs 
+avant la sortie qui est très bon marché.&lt;br /&gt;
+En fait, même une fois fini, le coût de réparation des erreurs est beaucoup 
+moins cher que de changer les fondations d’une maison.&lt;br /&gt;
+Pour les logiciels, le coût de construction c’est le coût de la compilation 
+ainsi que des tests.&lt;br /&gt;
+Pour compiler un million de lignes d’application en quelques secondes, je peux 
+le tester en quelques minutes.&lt;br /&gt;
+Enfin la résolution des problèmes à l’intérieur de celui-ci sera une question 
+d’heures.&lt;br /&gt;
+Donc pour les logiciels, le coût de construction est bon marché.&lt;br /&gt;
+Est-ce que si nous pouvions construire une maison pour 100 € de l’heure et en 
+même temps pouvoir effectuer des modifications nous prendrions un architecte ?&lt;br /&gt;
+Bien sûr que non, eh bien pour le code c’est un peu pareil, voilà pourquoi le 
+développeur coûte cher.&lt;br /&gt;
+À chaque changement que vous allez vouloir, vous allez payer le développeur 
+pour qu’il fasse ce que vous souhaitiez, maintenant que l’on sait que la 
+construction du logiciel ne prendra que quelques minutes tout au plus.&lt;br /&gt;
+En revanche, pour une nouvelle évolution, il n’y a aucune garantie que nous 
+le concevions correctement.&lt;br /&gt;
+Il est facile de faire évoluer un design en quelque chose qui fonctionne.&lt;br /&gt;
+Malheureusement, il est aussi facile de le rendre difficile à modifier, 
+difficile de maintenir.&lt;br /&gt;
+Nous savons qu’une bonne série de tests élimine la peur et nous permet de 
+garder notre code constamment propre.&lt;br /&gt;
+Nous devons pratiquer le développement piloté par les tests (TDD) et faire 
+beaucoup d’efforts pour garder notre code toujours propre.&lt;br /&gt;
+Le problème, c’est que pour nettoyer nos conceptions, nous devons être en 
+mesure de reconnaître quand elles tournent mal.&lt;br /&gt;
+Il faut qu’on sache que le design sent mauvais.&lt;/p&gt;
+
+&lt;h3 id=&quot;quels-sont-les-symptômes-dune-mauvaise-conception-&quot;&gt;Quels sont les symptômes d’une mauvaise conception ?&lt;/h3&gt;
+
+&lt;p&gt;Comment savoir quand la conception de nos systèmes commence à se dégrader ?&lt;br /&gt;
+Pour répondre à cette question, nous allons examiner de plus près la rigidité, 
+la fragilité, l’immobilité, la viscosité et la complexité inutile.&lt;br /&gt;
+Comment pouvons-nous identifier ces mauvaises odeurs et les nettoyer avant 
+qu’elles ne deviennent un problème important ?&lt;br /&gt;
+Voici donc un top 5 des symptômes d’un code qui sent mauvais, et qui nous 
+amèneront donc à faire du code dit SOLID.&lt;/p&gt;
+
+&lt;h4 id=&quot;rigidité&quot;&gt;Rigidité&lt;/h4&gt;
+
+&lt;p&gt;La rigidité est la tendance d’un système à être difficile à changer, même de 
+façon simple.&lt;br /&gt;
+Qu’est-ce qui rend un système difficile à changer ?&lt;br /&gt;
+Il est difficile de changer un système lorsque le coût du changement est élevé.
+Par exemple, si en faisant un petit changement je dois modifier toute une 
+partie de mon code, alors ce système est rigide.&lt;br /&gt;
+Ce qui a commencé par un simple changement de deux jours en un seul module 
+devient un marathon de changement de plusieurs semaines.&lt;br /&gt;
+Disons maintenant que vous avez un système qui nécessite trois heures pour le 
+construire et le tester.&lt;br /&gt;
+Disons aussi que le changement le plus mineur au sous-système le moins 
+important de ce système nécessite une compilation et un test de trois heures.&lt;br /&gt;
+Ce système est rigide.
+Plus cela se produira, plus les gestionnaires et les clients seront mal à 
+l’aise et finiront par geler le développement et plus la rigidité 
+officielle s’installera.&lt;/p&gt;
+
+&lt;p&gt;Cela arrive sur deux choses :&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Quand il faut beaucoup de temps pour faire un test&lt;/li&gt;
+  &lt;li&gt;Quand un petit changement provoque une cascade de modifications ultérieures 
+dans les classes dépendantes.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Si nous pouvions réduire considérablement le temps de construction et d’essai, 
+nous pourrions rendre le système beaucoup moins rigide et beaucoup plus facile 
+à changer.&lt;br /&gt;
+Si nous pouvions trouver un moyen de restructurer le système de telle sorte que 
+lorsque vous l’avez modifié, vous n’auriez pas à reconstruire et à refaire tous 
+les tests.&lt;br /&gt;
+Les changements seraient alors beaucoup plus faciles à apporter et le système 
+serait beaucoup moins rigide.&lt;/p&gt;
+
+&lt;p&gt;En général, cependant, lorsque les tests prennent beaucoup de temps à 
+fonctionner, c’est une bonne indication que nous, développeurs, avons été 
+négligents.&lt;/p&gt;
+
+&lt;p&gt;Lorsque de petits changements forcent la recompilation, c’est aussi le symptôme 
+d’un couplage élevé.&lt;br /&gt;
+Et pour finir lorsque des classes sont couplées et que de minuscules 
+changements ont entraîné de revoir l’ensemble de toutes ces classes.&lt;br /&gt;
+Par conséquent, l’un de nos objectifs de conception est de gérer les 
+dépendances entre les classes pour s’assurer que lorsqu’une classe change, 
+les autres ne sont pas affectées.&lt;/p&gt;
+
+&lt;h4 id=&quot;fragilité&quot;&gt;Fragilité&lt;/h4&gt;
+
+&lt;p&gt;La fragilité est étroitement liée à la rigidité.
+Un système est fragile lorsqu’une petite modification d’une classe entraîne 
+un comportement erroné d’autres classes indépendantes.&lt;br /&gt;
+Imaginez un logiciel de domotique, ce logiciel serait fragile si, lorsque vous 
+installez un thermostat, celui-ci se met à baisser aussi lorsque vous baissez 
+les volets.&lt;br /&gt;
+Ce genre de dépendance comportementale n’est pas bonne du tout.&lt;br /&gt;
+Surtout du point de vue des managers et des clients qui les considèrent comme 
+des indices d’incompétence significative.&lt;br /&gt;
+Après tout, si chaque fois que les développeurs corrigent un bug ou ajoutent 
+une nouvelle fonctionnalité, quelque chose de complètement indépendant cassé ou 
+planté, la seule conclusion à laquelle ils peuvent arriver est que nous avons 
+perdu le contrôle de notre logiciel et ne savons pas ce que nous faisons.&lt;br /&gt;
+La méfiance règne et la crédibilité est perdue.&lt;br /&gt;
+Ce genre de problème est toujours causé par d’étranges couplages et dépendances 
+qui serpentent à travers le système.&lt;br /&gt;
+La solution est de gérer les dépendances entre les classes et de les isoler les 
+uns des autres.&lt;/p&gt;
+
+&lt;h4 id=&quot;immobilité&quot;&gt;Immobilité&lt;/h4&gt;
+
+&lt;p&gt;Un système est immobile lorsque ses composants internes ne peuvent pas être 
+facilement extraits et réutilisés dans de nouveaux environnements.&lt;br /&gt;
+Prenons par exemple le cas d’un système dans lequel il existe une classe type 
+pour s’identifier avec un nom d’utilisateur et un mot de passe.&lt;br /&gt;
+Si vous ne pouvez pas extraire rapidement cette classe de connexion et 
+l’utiliser dans un système complètement différent, alors cette classe est 
+immobile, elle ne peut pas être déplacée.&lt;br /&gt;
+L’immobilisation est causée par les couplages et dépendances dans les classes 
+du système.&lt;br /&gt;
+Cependant, il arrive aussi souvent que la classe en question ait trop de 
+paramètres dont elle dépend.&lt;br /&gt;
+Le travail et le risque requis pour séparer les parties souhaitables du 
+logiciel des parties indésirables sont trop grands pour être tolérés.&lt;br /&gt;
+Par exemple, disons que j’ai une classe de connexion qui utilise un schéma 
+de base de données et un schéma d’interface utilisateur particulier.&lt;br /&gt;
+Je ne pourrais pas réutiliser cette classe de connexion dans un système 
+différent s’il avait un schéma de base de données différent et un schéma 
+d’interface utilisateur différent.&lt;br /&gt;
+Ce module de connexion serait immobile.&lt;br /&gt;
+Cette partie du logiciel est donc simplement réécrite au lieu d’être réutilisée.&lt;/p&gt;
+
+&lt;h4 id=&quot;viscosité&quot;&gt;Viscosité&lt;/h4&gt;
+
+&lt;p&gt;Le système est visqueux lorsque les opérations nécessaires comme la 
+construction et les tests sont difficiles à réaliser et prennent beaucoup de 
+temps.&lt;br /&gt;
+C’est la résistance au changement.&lt;br /&gt;
+La conception de nouvelles fonctionnalités qui doivent être ajoutées à travers 
+plusieurs couches du système pour traiter l’information, à travers divers 
+mécanismes comme la sérialisation ou l’hydratation.&lt;br /&gt;
+Du coup, c’est toujours visqueux parce que, même le changement le plus simple 
+coûte cher.&lt;br /&gt;
+La cause de la viscosité est toujours la même: la tolérance irresponsable.&lt;br /&gt;
+Et cela porte plusieurs petits noms : &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;hacking&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;quick and dirty&lt;/code&gt; ou encore 
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;quick win&lt;/code&gt;.&lt;br /&gt;
+C’est facile de faire la mauvaise chose, mais il est plus difficile de faire la 
+bonne chose.&lt;br /&gt;
+Nous, les développeurs, tolérons des conditions que nous savons mauvaises et ne 
+faisons rien pour les corriger.&lt;br /&gt;
+Le coût de ces mauvais comportements est le couplage.&lt;br /&gt;
+Un couplage rigide rend les systèmes difficiles à construire, à tester et à 
+changer.&lt;br /&gt;
+C’est ce couplage rigide qui rend le coût de ces opérations essentielles élevé.&lt;br /&gt;
+Le traitement pour la viscosité est d’attaquer les symptômes en découplant les 
+classes puis en gérant les dépendances qui restent.&lt;/p&gt;
+
+&lt;h4 id=&quot;complexité-inutile&quot;&gt;Complexité inutile&lt;/h4&gt;
+
+&lt;p&gt;Un véritable problème commun dans les discussions sur la conception de 
+logiciels est de savoir comment gérer l’avenir.&lt;br /&gt;
+Devrions-nous concevoir notre système que pour répondre aux exigences 
+actuelles ?&lt;br /&gt;
+Ou bien devrions-nous envisager à long terme et anticiper toutes les exigences 
+futures du système ?&lt;br /&gt;
+En d’autres termes, devrions-nous verrouiller pour des extensions futures ou 
+non ?&lt;br /&gt;
+Les systèmes qui portent beaucoup d’anticipation sont inutilement complexes.&lt;br /&gt;
+Chaque nouveauté est un autre poids ajouté au système auquel nous devons faire 
+attention dans le présent.&lt;br /&gt;
+Lorsque vous avez peur de votre code et que vous pensez qu’il est difficile et 
+coûteux de le modifier, vous allez alors l’intégrer à votre code avec toutes 
+sortes d’éléments de conception anticipatifs.&lt;br /&gt;
+Pour que vous n’ayez pas à changer le design plus tard.&lt;br /&gt;
+Par contre, suivre une règle simple comme le TDD, vous n’aurez pas peur de 
+changer le code.&lt;br /&gt;
+Vous n’aurez pas besoin de jongler avec un tas d’éléments anticipatifs, vos 
+designs seront plus simples, plus faciles à entretenir et ils ne seront pas 
+inutilement complexes.&lt;br /&gt;
+La complexité inutile conduit souvent à un couplage fort, car nous anticipons le 
+besoin futur de relations entre des classes qui ne sont pas liées actuellement.&lt;br /&gt;
+Plus nous anticipons de telles relations futures, plus le logiciel devient 
+étroitement couplé.&lt;br /&gt;
+La solution, bien sûr, est de garder votre conception axée sur la suite 
+actuelle des exigences tout en maintenant une suite complète de tests qui 
+réduit votre crainte de changer la conception plus tard.&lt;br /&gt;
+Personne ne commence à concevoir un système qui sent mauvais.&lt;br /&gt;
+Les mauvaises odeurs s’accumulent au fil du temps.&lt;br /&gt;
+Elles sont causées par une série de mauvaises décisions motivées par 
+l’insouciance, la peur et de fausses opportunités.&lt;br /&gt;
+Plus le désordre est grand, plus il est difficile de progresser, plus tout 
+devient difficile.&lt;br /&gt;
+Et plus la tentation est grande de prendre le genre de raccourcis qui 
+augmentent le désordre.&lt;br /&gt;
+Vous aurez peut-être déjà entendu les termes YAGNI (You Ain’t Gonna Need It) et 
+KISS (Keep It Simple Stupid).  &lt;br /&gt;
+Attention toutefois à ne pas confondre &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Simple&lt;/code&gt; et &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Simpliste&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h3&gt;
+
+&lt;p&gt;Voilà pour la première partie de cet article.&lt;br /&gt;
+Ces cinq symptômes sont les signes révélateurs d’une mauvaise architecture.&lt;br /&gt;
+Toute application qui les expose souffre d’un design qui pourrit de l’intérieur 
+vers l’extérieur.&lt;/p&gt;
+
+&lt;h5 id=&quot;mais-quest-ce-qui-cause-cette-pourriture&quot;&gt;Mais qu’est-ce qui cause cette pourriture?&lt;/h5&gt;
+
+&lt;p&gt;Ce sera le but du prochain article.&lt;br /&gt;
+Pour cela nous regarderons un code qui pourrit.&lt;br /&gt;
+Nous commencerons avec un design agréable et propre et regardons changement 
+après changement une dégradation de ce design en une sorte de tumeur qui se 
+répand.&lt;br /&gt;
+Ensuite, nous étudierons une conception alternative qui ne pourrit pas lorsque 
+les mêmes changements sont appliqués.&lt;br /&gt;
+Nous étudierons la différence entre ces deux conceptions et découvrirons le 
+principe qui sous-tend tout le design orienté objet.&lt;br /&gt;
+Nous plongerons plus profondément dans l’histoire de l’Orienté Objet (OO), et 
+en déduirons une nouvelle définition sans ambiguïté de l’OO basée sur la 
+gestion des dépendances.&lt;br /&gt;
+Enfin, nous jetterons un bref coup d’œil aux principes S.O.L.I.D. qui seront 
+bien plus développés dans de prochains articles.&lt;/p&gt;
+</description>
+        <pubDate>Fri, 26 Jan 2018 00:00:00 +0100</pubDate>
+        <link>http://roukmoute.github.io/solid/2018/01/26/fondements_des_principes_solid_partie1/</link>
+        <guid isPermaLink="true">http://roukmoute.github.io/solid/2018/01/26/fondements_des_principes_solid_partie1/</guid>
+      </item>
+    
+      <item>
+        <title>Factory Method — Les Fondements</title>
+        <description>&lt;h3 id=&quot;définition-du-gof&quot;&gt;Définition du GoF&lt;/h3&gt;
+
+&lt;p&gt;Définir une interface pour créer un objet, mais laisser les sous-classes 
+décider de la classe à instancier.
+Factory Method permet à une classe de différer l’instanciation à des 
+sous-classes.&lt;/p&gt;
+
+&lt;p&gt;Bon pour la définition, c’est fait.&lt;/p&gt;
+
+&lt;h3 id=&quot;lessence-de-la-factory-method&quot;&gt;L’essence de la Factory Method&lt;/h3&gt;
+
+&lt;p&gt;Comprenons le schéma de la Factory Method (Méthode Usine) en regardant 
+quelques classes de vignobles, parce que comprendre avec du bon vin, c’est tout 
+aussi bien.&lt;br /&gt;
+Nous allons commencer avec notre classe simple ici appelée &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GrapeVariety&lt;/code&gt; 
+(la traduction du mot cépage) et il a une méthode appelée &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;produceWine()&lt;/code&gt;, qui 
+retourne un vin “standard”.&lt;br /&gt;
+Ensuite, nous avons un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Riesling&lt;/code&gt; qui a sa propre méthode &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;produceWine()&lt;/code&gt;.&lt;br /&gt;
+Ce cépage produit uniquement… du Riesling.&lt;br /&gt;
+Donc cette classe passe outre la méthode &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;produceWine()&lt;/code&gt; de la classe parent 
+pour retourner un vin blanc.&lt;/p&gt;
+
+&lt;p&gt;Il passe outre &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;produceWine()&lt;/code&gt; et à ce stade, nous pourrions déjà dire que 
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;produceWine()&lt;/code&gt; est une Factory Method :&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Il existe dans la classe parente qui retourne un cépage par défaut.&lt;/li&gt;
+  &lt;li&gt;Et il existe dans la sous-classe qui l’emporte sur la classe parent.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Voici une autre sous-classe de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GrapeVariety&lt;/code&gt;; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;AlsaceGrapeVarieties&lt;/code&gt;.&lt;br /&gt;
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;AlsaceGrapeVarieties&lt;/code&gt; produit plusieurs sortes de cépages alsaciens différents.&lt;br /&gt;
+Donc il produit la méthode &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;produceWine()&lt;/code&gt; qui peut retourner soit un 
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Sylvaner&lt;/code&gt;, un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Gewurtztraminer&lt;/code&gt; ou n’importe quel type de vin alsacien.&lt;br /&gt;
+Ainsi, selon votre préférence, vous pouvez obtenir l’un ou l’autre.&lt;br /&gt;
+Mais ce qu’il faut retenir c’est que la classe &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;AlsaceGrapeVarieties&lt;/code&gt; peut 
+produire différentes sortes de cépages.
+Ce sont tous des cépages !&lt;br /&gt;
+C’est important parce que le type de retour de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;produceWine()&lt;/code&gt; est un vin.&lt;/p&gt;
+
+&lt;p&gt;Et que chaque vin qui est renvoyé via la Factory Method à partir de la méthode 
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;produceWine()&lt;/code&gt; doit obéir à ce contrat.&lt;br /&gt;
+Et ce doit être une sous-classe du cépage “standard” ou implémenter une 
+interface du cépage.&lt;br /&gt;
+C’est donc un modèle de la Factory Method.&lt;br /&gt;
+C’est une méthode qui fait de la création.&lt;br /&gt;
+Elle existe dans une hiérarchie.&lt;br /&gt;
+Dans le code une hiérarchie est pyramidale, tout en haut, nous avons le plus 
+abstrait, donc une interface ou une classe abstraite par exemple, puis on 
+descend jusqu’au plus concret.&lt;br /&gt;
+Plus on descend dans les niveaux, plus la classe est plus précise que son 
+précédent.&lt;br /&gt;
+C’est soit abstrait, soit une interface.&lt;br /&gt;
+Ainsi, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;produceWine()&lt;/code&gt; n’a pas besoin de renvoyer une valeur par défaut, cela 
+pourrait simplement être un commandement pour les sous-classes de déclarer et 
+d’implémenter une méthode &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;produceWine()&lt;/code&gt;.&lt;br /&gt;
+Et c’est tout.&lt;br /&gt;
+Nous avons donc une création &lt;a href=&quot;/programmation/2017/12/23/polymorphisme/&quot;&gt;polymorphe&lt;/a&gt; 
+de cépages et ceci est une Factory Method.&lt;/p&gt;
+
+&lt;p&gt;Le concept de hiérarchie et de polymorphisme est important !&lt;br /&gt;
+C’est, en effet, ce qui permettra de faire la distinction avec le Design 
+Pattern Template Method.&lt;br /&gt;
+Nous verrons ce Pattern plus tard, il est inutile pour la suite de cet article.&lt;/p&gt;
+
+&lt;h3 id=&quot;les-variations&quot;&gt;Les variations&lt;/h3&gt;
+
+&lt;p&gt;Ce pattern peut être fait de plusieurs manières.&lt;br /&gt;
+Nous allons voir 3 implémentations de possibles, histoire de bien faire le tour.&lt;/p&gt;
+
+&lt;h4 id=&quot;les-participants&quot;&gt;Les participants&lt;/h4&gt;
+
+&lt;p&gt;Je vais utiliser le même concept fourni que dans le GoF pour ce qui est des 
+“participants”.&lt;/p&gt;
+
+&lt;p&gt;Les participants ce sont les classes et/ou les objets participant au Design 
+Pattern et leurs responsabilités.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Consommateur&lt;/code&gt; — L’objet qui veut créer un nouveau &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Produit&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Produit&lt;/code&gt; — L’objet qui est créé et livré au &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Consommateur&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Producer&lt;/code&gt; — L’objet qui fabrique le &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Produit&lt;/code&gt;. Cet objet peut être une 
+interface ou une classe abstraite au sein d’une hiérarchie.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Factory Method&lt;/code&gt; — La méthode &lt;a href=&quot;/programmation/2017/12/23/polymorphisme/&quot;&gt;polymorphe&lt;/a&gt; 
+dans une hiérarchie de classe qui retourne le &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Produit&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;implémentation-par-défaut&quot;&gt;Implémentation par défaut&lt;/h4&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/factory_method_les_fondements/default_implementation.svg&quot; alt=&quot;Implémentation par défaut&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Sur ce schéma, l’implémentation par défaut est avec une classe &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Creator&lt;/code&gt; qui 
+fournit une implémentation par défaut (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ConcreteProduct&lt;/code&gt;) pour la Factory 
+Method, tandis que &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ConcreteCreator&lt;/code&gt; remplace l’implémentation 
+(&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;AnotherConcreteProduct&lt;/code&gt;) par défaut.&lt;/p&gt;
+
+&lt;h4 id=&quot;lorsque-la-factory-method-est-abstraite&quot;&gt;Lorsque la Factory Method est abstraite&lt;/h4&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/factory_method_les_fondements/factory_method_is_abstract.svg&quot; alt=&quot;la Factory Method est abstraite&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Ici très peu de changement par rapport au schéma précédent.&lt;br /&gt;
+La Factory Method est déclarée comme abstraite dans &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Creator&lt;/code&gt; et &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Produit&lt;/code&gt; est 
+abstrait.&lt;br /&gt;
+Ceci permet à la méthode &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;AnOperation()&lt;/code&gt; de fournir une instanciation 
+&lt;a href=&quot;/programmation/2017/12/23/polymorphisme/&quot;&gt;polymorphe&lt;/a&gt; du produit.&lt;br /&gt;
+&lt;strong&gt;Il ne faut pas confondre cela avec l’Abstract Factory.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;factory-method-paramétrée&quot;&gt;Factory Method paramétrée&lt;/h4&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-php&quot; data-lang=&quot;php&quot;&gt;&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Database&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$database&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;PDO&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$database&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;===&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;mysql&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;DatabaseMySql&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$database&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;===&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;pgsql&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;DatabasePostgreSQL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;CommercialDatabase&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Database&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$database&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;PDO&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$database&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;===&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;microsoft&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;SQLServer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$database&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;===&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;oracle&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Database12c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;parent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$database&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Dans ce cas, la Factory Method prend un paramètre qui l’aide à sélectionner 
+la &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Base de données&lt;/code&gt; obtenue.&lt;br /&gt;
+Ce dernier cas est un des plus connu et utilisé.&lt;br /&gt;
+Si le paramètre passé à la Factory Method n’aide pas à la sélection de la 
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Base de données&lt;/code&gt;, elle ne serait techniquement pas appelée 
+“Factory Method paramétrée”.&lt;/p&gt;
+
+&lt;h3 id=&quot;résumé&quot;&gt;Résumé&lt;/h3&gt;
+
+&lt;p&gt;Voici donc un petit résumé pour remettre tout dans le bon ordre histoire 
+d’avoir bien compris ce Pattern.&lt;/p&gt;
+
+&lt;p&gt;Une Factory Method est, par définition, &lt;a href=&quot;/programmation/2017/12/23/polymorphisme/&quot;&gt;polymorphe&lt;/a&gt;.&lt;br /&gt;
+Si elle n’était pas &lt;a href=&quot;/programmation/2017/12/23/polymorphisme/&quot;&gt;polymorphe&lt;/a&gt;, nous l’appellerions probablement 
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Creation Method&lt;/code&gt; (encore une fois c’est un Pattern que nous verrons plus tard).&lt;/p&gt;
+
+&lt;p&gt;Comme nous avons pu le voir avec l’implémentation par défaut, il n’est pas 
+nécessaire d’utiliser une méthode abstraite pour implémenter une Factory Method.&lt;br /&gt;
+Bien que la hiérarchie soit une caractéristique de la Factory Method, il est 
+possible de fournir un &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Produit&lt;/code&gt; par défaut, épargnant ainsi aux sous-classes 
+qui n’ont pas besoin de passer outre à la nécessité de spécifier l’une des leurs.&lt;/p&gt;
+
+&lt;p&gt;Une Factory Method peut créer un seul objet et même un agrégat d’objets.&lt;br /&gt;
+Tandis qu’une Factory Method renvoie un seul objet, cet objet peut contenir des 
+objets supplémentaires accessibles à travers les champs de la nouvelle 
+instance.&lt;br /&gt;
+En effet, le &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Produit&lt;/code&gt; peut être un agrégat élaboré, comme un arbre ou une 
+collection.&lt;/p&gt;
+
+&lt;p&gt;Si une Factory Method prend un paramètre, c’est n’est PAS par définition une 
+“Factory Method paramétrée”.&lt;br /&gt;
+N’importe quelle Factory Method peut prendre des paramètres qui remplissent le 
+même rôle que ceux d’un constructeur, c’est-à-dire aider à décider comment 
+remplir les champs de la nouvelle instance.&lt;br /&gt;
+Ce n’est que dans les cas où le paramètre est utilisé pour déterminer le type 
+réel du &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Produit&lt;/code&gt; retourné que nous nous référons à la Factory Method comme 
+étant une “Factory Method paramétrée”.&lt;/p&gt;
+
+&lt;p&gt;Une fois qu’une méthode devient statique, elle ne peut pas être une Factory 
+Method puisque les Factory Methods sont implémentées en utilisant l’héritage 
+et que vous n’obtenez pas d’héritage avec les méthodes statiques.&lt;/p&gt;
+
+&lt;h3 id=&quot;comment-la-factory-method-favorise-t-elle-un-code-à-couplage-faible-&quot;&gt;Comment la Factory Method favorise-t-elle un code à couplage faible ?&lt;/h3&gt;
+
+&lt;p&gt;Une Factory Method peut reporter la création de l’objet à une sous-classe, ce 
+qui permet un couplage faible, aucune statique ne doit rentrer en jeu, sinon 
+cela s’appelle une Creation Method.&lt;br /&gt;
+Une Factory Method ne permet pas au consommateur de créer une “famille de 
+produits”.&lt;br /&gt;
+Il s’agit de l’&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Abstract Factory Pattern&lt;/code&gt;.&lt;br /&gt;
+La plupart des implémentations de la méthode Factory Method ont tendance à 
+fonctionner avec un seul produit (pas avec une famille de produits), et 
+que ce seul produit a souvent plusieurs implémentations concrètes.&lt;br /&gt;
+Le code client qui appelle la Factory Method est faiblement couplé au code qui 
+crée et retourne un objet, parce que le client n’a pas besoin de se soucier de 
+quelle sous-classe est appelée.&lt;/p&gt;
+
+&lt;h3 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h3&gt;
+
+&lt;p&gt;Bon… Pour la théorie, c’est maintenant fini :)&lt;br /&gt;
+Je suis bien plus pour la pratique, mais je pense qu’un petit peu de théorie 
+est tout de même important pour mieux comprendre ce que l’on va faire par la 
+suite.&lt;br /&gt;
+Pour ce qui est de la pratique, cela se fera en plusieurs articles, chaque 
+article étant un cas concret.&lt;br /&gt;
+Non pas qu’il soit difficile, comme vous venez de le voir, mais je pense que 
+plus il y a d’exemples disponibles, mieux c’est.&lt;/p&gt;
+
+&lt;p&gt;À l’année prochaine !&lt;/p&gt;
+</description>
+        <pubDate>Sat, 30 Dec 2017 00:00:00 +0100</pubDate>
+        <link>http://roukmoute.github.io/design_patterns/2017/12/30/factory_method_les_fondements/</link>
+        <guid isPermaLink="true">http://roukmoute.github.io/design_patterns/2017/12/30/factory_method_les_fondements/</guid>
+      </item>
+    
+      <item>
+        <title>Le polymorphisme</title>
+        <description>&lt;p&gt;Le polymorphisme est beaucoup utilisé dans le langage informatique.
+Ce n’est pas bien compliqué à comprendre, mais souvent je trouve que cela peut 
+&lt;a href=&quot;https://fr.wikipedia.org/wiki/Polymorphisme_(informatique)&quot;&gt;partir bien loin&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Voici donc un petit article qui, je l’espère, vous permettra de comprendre ce 
+mot.&lt;/p&gt;
+
+&lt;p&gt;Le polymorphisme pourrait avoir comme définition “une interface unique et un 
+fonctionnement multiple”.&lt;br /&gt;
+Par exemple: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;x&lt;/code&gt; est une personne et chaque personne travaille différemment 
+donc &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;x&lt;/code&gt; est une interface unique et son fonctionnement est multiple.&lt;/p&gt;
+
+&lt;p&gt;La beauté du polymorphisme est que le code qui fonctionne avec les différentes 
+classes n’a pas besoin de savoir quelle classe il utilise puisqu’elles sont 
+toutes utilisées de la même façon.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;
+    Une analogie du monde réel pour le polymorphisme est un bouton.  
+    Tout le monde sait comment utiliser un bouton: il suffit d&apos;appuyer dessus.  
+    Ce qu&apos;un bouton &quot;fait&quot;, cependant, dépend de ce à quoi il est connecté et 
+    du contexte dans lequel il est utilisé — mais le résultat n&apos;affecte pas la 
+    façon dont il est utilisé.  
+    Si votre patron vous dit d&apos;appuyer sur un bouton, vous disposez déjà de 
+    toutes les informations nécessaires pour effectuer la tâche.
+  &lt;/p&gt;
+  &lt;p&gt;    
+    Dans le monde de la programmation, le polymorphisme est utilisé pour rendre 
+    les applications plus modulaires et extensibles.  
+    Au lieu d&apos;écrire plein de conditions décrivant une nouvelle action, vous 
+    créez des objets interchangeables que vous sélectionnez en fonction de vos 
+    besoins.  
+    C&apos;est l&apos;objectif fondamental du polymorphisme.
+  &lt;/p&gt;
+  &lt;footer&gt;&lt;cite title=&quot;Steve Guidetti&quot;&gt;Steve Guidetti&lt;/cite&gt;&lt;/footer&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Exemple simple avec la méthode &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;__toString&lt;/code&gt; qui affiche toutes les données 
+actuellement stockées dans l’instance &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Aircraft&lt;/code&gt; :&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-php&quot; data-lang=&quot;php&quot;&gt;&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Aircraft&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;cd&quot;&gt;/**
+     * @var string
+     */&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$aircraftType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;cd&quot;&gt;/**
+     * @var string
+     */&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$departureCity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;cd&quot;&gt;/**
+     * @var string
+     */&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$arrivalCity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;__construct&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+        &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$aircraftType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$departureCity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$arrivalCity&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;$this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;aircraftType&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$aircraftType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;$this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;departureCity&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$departureCity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;$this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;arrivalCity&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$arrivalCity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;__toString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sprintf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+            &lt;span class=&quot;s2&quot;&gt;&quot;Bienvenue à bord de notre %s.&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;.&lt;/span&gt;
+            &lt;span class=&quot;s2&quot;&gt;&quot;Ce vol est en décollage imminent de %s et aura pour arrivée %s.&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;.&lt;/span&gt;
+            &lt;span class=&quot;s2&quot;&gt;&quot;Merci, à très bientôt !&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+            &lt;span class=&quot;nv&quot;&gt;$this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;aircraftType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt;
+            &lt;span class=&quot;nv&quot;&gt;$this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;departureCity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt;
+            &lt;span class=&quot;nv&quot;&gt;$this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;arrivalCity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;aircraftType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;aircraftType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;departureCity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;departureCity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;arrivalCity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;arrivalCity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://3v4l.org/FpTpB&quot;&gt;L’exemple à tester en ligne&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Pour démontrer les caractéristiques polymorphes dans le langage PHP, on va 
+étendre notre classe &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Aircraft&lt;/code&gt; avec une classe &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PrivateJet&lt;/code&gt; et une classe 
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;LowCostAircraft&lt;/code&gt;.&lt;br /&gt;
+Pour le &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PrivateJet&lt;/code&gt;, on va ajouter un champ supplémentaire appelé 
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;airportDestination&lt;/code&gt;, qui est une chaine de caractère qui indique… le nom de 
+l’aéroport de notre destination.&lt;/p&gt;
+
+&lt;p&gt;Voici donc notre nouvelle classe :&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-php&quot; data-lang=&quot;php&quot;&gt;&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;PrivateJet&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Aircraft&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$arrivalCity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;cd&quot;&gt;/**
+     * @var string
+     */&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$airportDestination&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;__construct&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+        &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$aircraftType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$departureCity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$arrivalCity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$airportDestination&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;parent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;__construct&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$aircraftType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$departureCity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$arrivalCity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+        &lt;span class=&quot;nv&quot;&gt;$this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;airportDestination&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$airportDestination&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;__toString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sprintf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+            &lt;span class=&quot;s2&quot;&gt;&quot;%s&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;.&lt;/span&gt;
+            &lt;span class=&quot;s2&quot;&gt;&quot;Notre arrivé se fera à l&apos;aéroport %s.&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;parent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;__toString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt;
+            &lt;span class=&quot;nv&quot;&gt;$this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;airportDestination&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;airportDestination&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;airportDestination&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://3v4l.org/eA0Zt&quot;&gt;L’exemple à tester en ligne&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Notez que nous avons surchargé sur la méthode &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;__toString&lt;/code&gt;.&lt;br /&gt;
+Outre les informations fournies précédemment, la donnée supplémentaire sur le 
+nom de l’aéroport d’arrivée est incluse dans la sortie.&lt;/p&gt;
+
+&lt;p&gt;Le polymorphisme offre de nombreux avantages.&lt;br /&gt;
+Le gain le plus important se produit lorsque le même ensemble de conditions 
+apparaît à plusieurs endroits du programme.&lt;br /&gt;
+Si vous voulez ajouter un nouveau type, vous devez trouver et mettre à jour 
+toutes les conditions.&lt;br /&gt;
+Mais avec les sous-classes, il vous suffit de créer une nouvelle sous-classe et 
+de fournir les méthodes appropriées.&lt;/p&gt;
+
+&lt;p&gt;Nous pouvons aussi modifier une autre méthode disponible :&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-php&quot; data-lang=&quot;php&quot;&gt;&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;LowCostAircraft&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Aircraft&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;__construct&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+        &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$aircraftType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$departureCity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$arrivalCity&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;parent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;__construct&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$aircraftType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$departureCity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$arrivalCity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;arrivalCity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sprintf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;%s.&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Le moteur est le coeur d&apos;un avion, mais le pilote est son âme&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;parent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;arrivalCity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://3v4l.org/ECneC&quot;&gt;L’exemple à tester en ligne&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Pour résumer, nous avons trois classes. Chaque sous-classe surcharge une 
+méthode pour afficher finalement une information unique.&lt;/p&gt;
+
+&lt;h3 id=&quot;mais-en-fait-cest-juste-une-classe-abstraite-&quot;&gt;Mais en fait, c’est juste une classe abstraite ?&lt;/h3&gt;
+
+&lt;p&gt;C’est un peu plus que ça.  &lt;br /&gt;
+Je dirai plus qu’il s’agit d’une implémentation, donc cela peut-être une classe 
+abstraite ou une interface.&lt;/p&gt;
+
+&lt;p&gt;Les autres méthodes qui vont vouloir utiliser votre interface/abstraction n’ont 
+pas besoin de connaître les sous-classes, ce qui réduit les dépendances dans 
+votre système et facilite la mise à jour.&lt;/p&gt;
+
+&lt;p&gt;La définition du polymorphisme dans le dictionnaire renvoie à un principe de la 
+biologie selon lequel un organisme ou une espèce peut avoir plusieurs formes ou 
+stades différents.&lt;br /&gt;
+Ce principe peut également s’applique aussi à la programmation orientée objet 
+et aux langages comme le langage PHP.&lt;br /&gt;
+Les sous-classes d’une classe peuvent définir leurs propres comportements 
+uniques tout en partageant certaines fonctionnalités de la classe parente.&lt;/p&gt;
+
+&lt;p&gt;Le polymorphisme décrit un modèle de programmation orientée objet dans lequel 
+les classes ont des fonctionnalités différentes tout en partageant une 
+interface commune.&lt;/p&gt;
+
+&lt;p&gt;Voilà pour ce court article :)&lt;/p&gt;
+
+&lt;p&gt;Bonnes fêtes de Noël !&lt;/p&gt;
+</description>
+        <pubDate>Sat, 23 Dec 2017 00:00:00 +0100</pubDate>
+        <link>http://roukmoute.github.io/programmation/2017/12/23/polymorphisme/</link>
+        <guid isPermaLink="true">http://roukmoute.github.io/programmation/2017/12/23/polymorphisme/</guid>
+      </item>
+    
+      <item>
+        <title>Introduction à la SPL</title>
+        <description>&lt;h3 id=&quot;introduction&quot;&gt;Introduction&lt;/h3&gt;
+
+&lt;p&gt;La plupart du temps, le développement en PHP consiste à récupérer et traiter 
+des données d’une source ou d’une autre, comme une base de données, des 
+fichiers locaux, une API distante, etc. En tant que tels, les développeurs 
+passent beaucoup de temps à obtenir, organiser, déplacer et manipuler ces 
+données.&lt;br /&gt;
+Dans certains cas, un tableau ne suffira pas à réduire l’utilisation et les 
+performances de la mémoire et donc de meilleures structures de données sont 
+nécessaires.&lt;br /&gt;
+Aussi, avec tant de discussion et de concentration sur les frameworks 
+(cette page pourrait être remplie avec des noms de frameworks PHP !), vous ne 
+pouvez pas connaitre parfaitement tous les frameworks.&lt;br /&gt;
+Ils se développent et changent à une vitesse folle.&lt;br /&gt;
+Il existe beaucoup de frameworks, même si actuellement seuls quelques un ont 
+réussi à se démarquer comme Symfony, Laravel ou encore Zend.&lt;br /&gt;
+Aussi, si vous n’en aviez jamais utilisé, vous n’allez pas pouvoir sortir du 
+lot rapidement dans ce domaine.&lt;/p&gt;
+
+&lt;p&gt;Un secteur sur lequel il faut se concentrer, et où vous êtes raisonnablement 
+sûr qu’un expert PHP aura la familiarité, est dans la manipulation et la 
+composition générale de la bibliothèque standard PHP (SPL).&lt;br /&gt;
+Si vous avez une solide formation dans cette discipline, vos chances de succès 
+pour avoir un travail seront bien plus grandes.&lt;br /&gt;
+Et vous pourrez vous adapter et comprendre bien plus vite les frameworks 
+actuels, qui utilisent énormément la SPL dans leur cœur.&lt;br /&gt;
+Plus précisément, vous devriez être familier avec une partie ou l’ensemble 
+des neuf structures de données SPL énumérées dans le Manuel PHP.&lt;br /&gt;
+Beaucoup offrent des possibilités très similaires les unes aux autres, mais les 
+légères variations rendent chacune d’entre elles plus parfaitement adaptée à un 
+usage particulier.&lt;br /&gt;
+Nous étudierons toute la SPL de long en large, les neuf structurent des 
+données, les itérateurs, etc.&lt;br /&gt;
+Cependant, l’un des gros problèmes de la SPL est sa documentation qui n’incite 
+pas à l’utiliser tellement elle est austère et en manque d’exemples.&lt;br /&gt;
+Après avoir lu cette partie, vous serez prêt pour manipuler les interfaces SPL, 
+les neuf structures de données et bien sûr les itérateurs.&lt;/p&gt;
+
+&lt;h3 id=&quot;que-propose-la-spl-&quot;&gt;Que propose la SPL ?&lt;/h3&gt;
+
+&lt;p&gt;Nous allons maintenant voir ce que propose la SPL pour les structures de 
+données.&lt;br /&gt;
+Il en existe neuf, que nous analyserons tout au long des prochains articles.&lt;/p&gt;
+
+&lt;p&gt;Mais qu’apportent-elles de nouveau par rapport à nos tableaux ?&lt;/p&gt;
+
+&lt;p&gt;Et bien dans l’absolu… rien.
+Oui oui, vous avez bien lu, vous pouvez faire exactement la même chose avec de 
+simples tableaux.&lt;br /&gt;
+En revanche si elles sont là, ce n’est pas non plus pour faire de la 
+décoration, leur utilité va se trouver au niveau des ressources dans votre 
+application.&lt;/p&gt;
+
+&lt;h3 id=&quot;mais-au-fait-quest-ce-quune-structure-de-données-&quot;&gt;Mais au fait, qu’est-ce qu’une structure de données ?&lt;/h3&gt;
+
+&lt;p&gt;Avant tout, une structure de données est un moyen de stocker et d’organiser les 
+données, qu’on appelle élément, dans la mémoire afin qu’elles puissent être 
+utilisées avantageusement.&lt;br /&gt;
+L’efficacité signifie qu’ils peuvent être rapides à récupérer ou encore à 
+mettre à jour ou qu’ils peuvent être puissants en ce qui concerne l’utilisation 
+de la mémoire.&lt;/p&gt;
+
+&lt;p&gt;Un tableau par exemple est quelque chose de très manipulable, mais pas 
+forcément l’élément le plus léger pour accéder où écrire des données.&lt;/p&gt;
+
+&lt;p&gt;C’est là où ces structures rentrent en jeu.&lt;/p&gt;
+
+&lt;p&gt;Certaines vont être capables d’aller vite en lecture, d’autres bien plus 
+rapides en écriture, d’autres seront aptes de se maintenir à un certain seuil en 
+mémoire et d’autre encore seront rapide en écriture et lecture, mais au prix 
+d’un plus gros tampon nécessaire.&lt;/p&gt;
+
+&lt;p&gt;Apprenez à les manipuler et les performances de votre application iront bien 
+mieux qu’avec de simples tableaux.&lt;/p&gt;
+
+&lt;p&gt;Toutes les structures implémentent au minimum &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Iterator&lt;/code&gt; et &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Countable&lt;/code&gt;.
+Ce qui veut dire que l’on peut donc toutes les compter (via un modeste 
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;count()&lt;/code&gt;) ou bien les parcourir (en utilisant &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;foreach()&lt;/code&gt;), exactement comme 
+array.&lt;/p&gt;
+
+&lt;p&gt;Alors à très vite pour voir ensemble &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SplDoublyLinkedList&lt;/code&gt; !&lt;/p&gt;
+</description>
+        <pubDate>Sat, 16 Dec 2017 00:00:00 +0100</pubDate>
+        <link>http://roukmoute.github.io/php/spl/2017/12/16/introduction_a_la_SPL/</link>
+        <guid isPermaLink="true">http://roukmoute.github.io/php/spl/2017/12/16/introduction_a_la_SPL/</guid>
+      </item>
+    
+      <item>
+        <title>Guide d&apos;apprentissage pour concevoir des Design Patterns</title>
+        <description>&lt;h3 id=&quot;présentation-des-patterns&quot;&gt;Présentation des Patterns&lt;/h3&gt;
+
+&lt;p&gt;Les Patterns pour le développement sont l’un des thèmes les plus vieux qui 
+existent au sein de la communauté orientée objet.&lt;br /&gt;
+L’emploi actuel du terme “Pattern” est dérivé des écrits de l’architecte 
+Christopher Alexander qui a rédigé plusieurs ouvrages sur le sujet de 
+l’urbanisme et de l’architecture du bâtiment.&lt;br /&gt;
+Il ne s’agit ni plus ni moins que de la documentation des meilleures pratiques.&lt;/p&gt;
+
+&lt;h3 id=&quot;un-vocabulaire-commun-pour-les-gouverner-tous-&quot;&gt;Un vocabulaire commun pour les gouverner tous !&lt;/h3&gt;
+
+&lt;p&gt;C’est en apprenant et comprenant les Design Pattern que les développeurs 
+peuvent correctement s’entendre !&lt;br /&gt;
+Ces Patterns ont été créés pour aider les concepteurs de logiciels à résoudre 
+les problèmes récurrents rencontrés tout au long du développement.&lt;br /&gt;
+Les modèles sont utiles pour créer un langage commun pour communiquer des idées 
+et des expériences sur ces problèmes et leurs solutions.&lt;br /&gt;
+Si tout le monde les connait, on peut donc raisonner bien plus facilement et
+intelligemment aux sujets à résoudre.&lt;/p&gt;
+
+&lt;h3 id=&quot;un-guide-&quot;&gt;Un guide ?&lt;/h3&gt;
+
+&lt;p&gt;Quand je parle de Design Pattern autour de moi, on arrive très vite au livre de 
+référence “Design Patterns: Elements of Reusable Objet-Oriented Software” du 
+Gang of Four.&lt;br /&gt;
+On l’a tous déjà entendu au moins une fois, mais :&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;L’avons-nous lu en entier ?&lt;/li&gt;
+  &lt;li&gt;L’avons-nous bien compris ?&lt;/li&gt;
+  &lt;li&gt;Ne devrions-nous pas dire que nous l’avons “étudié” plutôt que “lu” ?&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Ainsi ce guide, qui sera écrit dans le temps, va permettre d’apprendre et 
+d’utiliser des Design Patterns, que simplement les avoir “lut”.&lt;br /&gt;
+Et quand moi il me légitimera d’en apprendre davantage au moment de leurs 
+rédactions !&lt;br /&gt;
+Je ne compte pas respecter le même ordre que le livre du GoF.&lt;br /&gt;
+Les Designs Patterns sont divisés en trois catégories :&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;créatifs (création d’objets d’une manière adaptée à la situation)&lt;/li&gt;
+  &lt;li&gt;structurels (facilitent la conception en identifiant une façon simple de 
+réaliser des relations entre les entités)&lt;/li&gt;
+  &lt;li&gt;comportementaux (identifient les patrons de communication communs entre les 
+objets)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Les Patterns sont dangereux, dans le sens où après avoir appris plusieurs
+Patterns, nous allons vouloir les utiliser à tout bout de champ, sans avoir
+pris le temps de le tester auparavant.&lt;br /&gt;
+Il y a bonne phrase de &lt;a href=&quot;http://www.croes.org&quot;&gt;Gerald Croes&lt;/a&gt; qui &lt;a href=&quot;http://www.croes.org/gerald/blog/nutilisez-pas-les-design-patterns-en-php/109/&quot;&gt;dit&lt;/a&gt; :&lt;br /&gt;
+“N’utilisez jamais les Modèles de Conception, mais connaissez-les, 
+maîtrisez-les !”&lt;br /&gt;
+Ce qui n’est pas totalement vrai et pas totalement faux.&lt;br /&gt;
+Est-ce qu’il faut utiliser les Design Pattern ?&lt;br /&gt;
+Oui, mais avant il faut les maîtriser.&lt;br /&gt;
+Le problème étant que, jeunes fougueux que nous sommes, nous venons d’apprendre 
+un Pattern et du coup on cherche à l’implémenter à tout prix.&lt;br /&gt;
+C’est absolument tout ce qu’il ne faut pas faire !&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/dCerM7S.gif&quot; alt=&quot;Au bucher !&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;En les maîtrisant, vous aurez déjà vous-même votre opinion si vous aimez tel ou 
+tel Pattern.&lt;br /&gt;
+Chacun à ses idées sur chaque Pattern, vous en détesterez comme vous en aimerez.&lt;/p&gt;
+
+&lt;p&gt;Les Patterns, en général, sont rarement utilisés isolément.&lt;br /&gt;
+Le Pattern Iterator a souvent recours au Pattern Composite, les Patterns 
+Observer et Mediator forment un lien classique, et ainsi de suite.&lt;br /&gt;
+Lorsque vous commencez à concevoir et programmer des Design Pattern, vous 
+découvrez rapidement que le véritable art d’utiliser des Patterns est de savoir 
+comment les combiner.&lt;/p&gt;
+
+&lt;p&gt;Pour apprendre à les maîtriser et pouvoir voir les relations entre eux, il est 
+donc utile d’en assimiler certains avant d’autres.&lt;br /&gt;
+Et certains modèles sont un peu plus complexes que d’autres.&lt;br /&gt;
+Cela vous permettra de passer intelligemment d’un Pattern à l’autre dans le but 
+de les maîtriser.&lt;/p&gt;
+
+&lt;p&gt;D’ailleurs le premier article que j’écrirai sera sur la “Factory Method”
+(Méthode d’usine).&lt;/p&gt;
+
+&lt;h3 id=&quot;un-peu-de-lecture-en-plus-&quot;&gt;Un peu de lecture en plus ?&lt;/h3&gt;
+
+&lt;p&gt;Vous voulez en apprendre davantage sur l’histoire des Designs Patterns  :&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.bradapp.com/docs/Patterns-intro.html&quot;&gt;http://www.bradapp.com/docs/Patterns-intro.html&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://dirkriehle.com/computer-science/research/1996/tapos-1996-survey.pdf&quot;&gt;http://dirkriehle.com/computer-science/research/1996/tapos-1996-survey.pdf&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Fri, 15 Dec 2017 00:00:00 +0100</pubDate>
+        <link>http://roukmoute.github.io/design_patterns/2017/12/15/guide_d_apprentissage_pour_concevoir_des_design_patterns/</link>
+        <guid isPermaLink="true">http://roukmoute.github.io/design_patterns/2017/12/15/guide_d_apprentissage_pour_concevoir_des_design_patterns/</guid>
+      </item>
+    
+      <item>
+        <title>Rencontre avec Libsodium</title>
+        <description>&lt;p&gt;Ca y’est !&lt;br /&gt;
+A moins d’être resté cloîtré dans une grotte, vous aurez largement lu que PHP 
+7.2 est sorti depuis exactement une semaine !&lt;br /&gt;
+Cette nouvelle version apporte plusieurs nouveautés 
+(&lt;a href=&quot;https://wiki.php.net/rfc/object-typehint&quot;&gt;typage en &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;object&lt;/code&gt;&lt;/a&gt;, 
+&lt;a href=&quot;http://php.net/archive/2017.php#id2017-11-30-1&quot;&gt;etc.&lt;/a&gt;), et introduit plusieurs 
+améliorations de sécurité.&lt;br /&gt;
+Dont une nouvelle extension &lt;a href=&quot;https://download.libsodium.org/doc/&quot;&gt;sodium&lt;/a&gt; qui 
+fait de PHP le premier langage de programmation à adopter le chiffrement 
+moderne dans sa bibliothèque standard !&lt;/p&gt;
+
+&lt;p&gt;Sodium est une bibliothèque cryptographique qui prend en charge des abstractions 
+de haut niveau pour le chiffrement, le déchiffrement, la signature, 
+le hachage des mots de passe et plus encore.&lt;br /&gt;
+C’est une copie d’un projet antérieur, &lt;a href=&quot;http://nacl.cr.yp.to/&quot;&gt;NaCl&lt;/a&gt;, 
+une bibliothèque de réseaux et de cryptographie.&lt;br /&gt;
+L’objectif des deux projets est de fournir aux programmeurs un outil rapide et 
+facile à utiliser pour travailler avec le chiffrement en toute sécurité et avec 
+lequel ils peuvent construire des outils encore plus performants pour les 
+utilisateurs finaux.&lt;/p&gt;
+
+&lt;p&gt;Contrairement à de nombreuses autres bibliothèques cryptographiques, Sodium se 
+concentre sur les schémas de chiffrage authentifiés.&lt;br /&gt;
+Cela signifie que chaque pièce de données chiffrées porte automatiquement un 
+code d’authentification de message (MAC, Message Authentication Code) qui peut 
+valider l’intégrité des données elles-mêmes.&lt;br /&gt;
+Si le MAC s’avère invalide, Sodium produira immédiatement une erreur.&lt;br /&gt;
+Utiliser un MAC pour valider un message chiffré n’est pas en soi un trait 
+unique.&lt;br /&gt;
+Cependant, beaucoup d’autres bibliothèques laisseront au développeur final le 
+soin d’implémenter la validation MAC.&lt;br /&gt;
+Sodium intègre cette primitive dans la bibliothèque elle-même afin de mieux 
+faire respecter les bonnes pratiques en matière d’intégrité des messages.&lt;/p&gt;
+
+&lt;p&gt;La force d’une clé privée RSA est liée à la fois à sa longueur et à la 
+puissance de calcul d’un attaquant.&lt;br /&gt;
+Une clé plus longue nécessite plus de puissance de calcul pour déchiffrer et 
+rend donc chaque “devinette” d’un attaquant quelque peu coûteux.&lt;br /&gt;
+Au fur et à mesure que les ordinateurs gagnent en vitesse et en performance 
+globale, les clés autrefois considérées comme sûres deviennent faibles.&lt;/p&gt;
+
+&lt;p&gt;Donc quand vous créez une clé secrète, appelée passphrase, arrêtez de rentrer 
+un mot de passe et tapez réellement une phrase ;)&lt;/p&gt;
+
+&lt;p&gt;Sodium utilise un autre type de mathématiques pour la cryptographie.&lt;br /&gt;
+Plutôt que de miser sur les nombres premiers et la factorisation, Sodium utilise 
+des calculs mathématiques défini par une &lt;a href=&quot;https://www.miximum.fr/blog/cryptographie-courbes-elliptiques-ecdsa/&quot;&gt;courbe elliptique&lt;/a&gt;.&lt;br /&gt;
+Le calcul lui-même est un peu plus complexe, mais donne une relation de clé 
+publique/privée similaire à la clé RSA traditionnelle.&lt;br /&gt;
+Cependant, en raison des calculs mathématiques, une clé elliptique de 256 bits 
+est aussi puissante qu’une clé RSA de 3072 bits.&lt;/p&gt;
+
+&lt;p&gt;Bien que Sodium soit pris en charge nativement à partir de PHP 7.2, certains 
+projets pourraient vouloir exploiter les mêmes interfaces cryptographiques sur 
+des platesformes utilisant des versions plus anciennes de PHP.&lt;br /&gt;
+Heureusement, c’est possible grâce à deux projets.&lt;br /&gt;
+Avant que Sodium ne soit en PHP nativement, il était disponible sous forme 
+d’extension &lt;a href=&quot;https://pecl.php.net/package/libsodium&quot;&gt;PECL&lt;/a&gt;.&lt;br /&gt;
+Toute personne exécutant au moins PHP 7.0 peut installer le module PECL et aura 
+le même niveau de fonctionnalité et de support que ceux qui utilisent les 
+compilations natives en 7.2.&lt;br /&gt;
+Le module PECL et l’extension PHP du noyau sont écrits par les mêmes auteurs, 
+de sorte qu’il n’ y a aucun compromis sur les environnements plus anciens.&lt;/p&gt;
+
+&lt;p&gt;Certains développeurs n’ont pas encore mis à jour vers PHP7, cependant.&lt;br /&gt;
+Pour ces équipes, le module &lt;a href=&quot;https://github.com/paragonie/sodium_compat&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sodium_compat&lt;/code&gt;&lt;/a&gt; 
+de Paragon Initiative9 est la voie à suivre.&lt;br /&gt;
+Ce module implémente Sodium en PHP s’il n’ y a pas d’extension native disponible 
+pour exposer l’API.&lt;br /&gt;
+Il est beaucoup plus lent à chiffrer et déchiffrer de cette façon mais signifie 
+que les anciens serveurs peuvent toujours utiliser Sodium même sans 
+distribution binaire.&lt;br /&gt;
+En fait, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sodium_compat&lt;/code&gt; est une approche solide pour tous ceux qui travaillent 
+avec Sodium et qui souhaitent maintenir une rétrocompatibilité avec PHP.&lt;br /&gt;
+Le module essaiera d’utiliser les fonctionnalités natives de PHP 7.2 si elles 
+sont disponibles.&lt;br /&gt;
+Il recherchera automatiquement l’extension PECL sur les anciens systèmes et 
+l’utilisera si elle est prise en charge.&lt;br /&gt;
+Enfin, sur les anciens systèmes sans module PECL pour Sodium, le polyfill 
+chargera une implémentation PHP des primitives cryptographiques.&lt;br /&gt;
+L’utilisation de &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sodium_compat&lt;/code&gt; signifie que vous pouvez écrire votre code une 
+fois puis le reporter à la bibliothèque pour choisir la meilleure implémentation&lt;br /&gt;
+pour vous.&lt;/p&gt;
+
+&lt;h3 id=&quot;comment-chiffrer-les-données-&quot;&gt;Comment chiffrer les données ?&lt;/h3&gt;
+
+&lt;p&gt;Libsodium rend la cryptographie à clé symétrique (où une seule clé de 
+chiffrage/déchiffrage est partagée par les deux parties impliquées) simple avec 
+les fonctions &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sodium_crypto_secretbox()&lt;/code&gt; et &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sodium_crypto_secretbox_open()&lt;/code&gt;.&lt;br /&gt;
+La première fonction est utilisée pour chiffrer un message de chaîne de 
+caractères avec un nombre arbitraire aléatoire et une clé symétrique spécifique.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-php&quot; data-lang=&quot;php&quot;&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;?php&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// Création nombre arbitraire&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$nonce&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;random_bytes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;SODIUM_CRYPTO_SECRETBOX_NONCEBYTES&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// Création d&apos;une clé secrète&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$key&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sodium_crypto_secretbox_keygen&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// Notre message à chiffrer&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$message&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;Notre message super secret!&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;cd&quot;&gt;/**
+ * Chiffrer le message, et stocker le texte chiffré résultant avec le nonce.
+ * Contrairement à la clé, le nonce n&apos;a pas besoin d&apos;être secret tant qu&apos;il 
+ * continue d&apos;être généré aléatoirement à chaque fois.
+ */&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$cipher&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sodium_crypto_secretbox&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$nonce&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// Déchiffrer le texte chiffré en utilisant la même clé et nonce&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$decipher&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sodium_crypto_secretbox_open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$cipher&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$nonce&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$decipher&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;PHP_EOL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://3v4l.org/CLWVB&quot;&gt;L’exemple à tester online&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;La clé est un secret partagé; notre nonce doit être unique pour chaque 
+opération de chiffrage mais ne doit pas être gardé secret.&lt;br /&gt;
+Déchiffrer notre message est exactement comme le chiffrage, seulement à l’envers.&lt;br /&gt;
+Libsodium utilise un chiffrage authentifié pour chaque transaction.&lt;br /&gt;
+Le message est à la fois chiffré et muni d’un code d’authentification de message 
+(MAC) pour vérifier que le message n’ a pas été falsifié.&lt;br /&gt;
+Lors du déchiffrage du message, Sodium vérifiera que personne n’a altéré le 
+message et vérifiera automatiquement l’erreur s’il a été modifié.&lt;/p&gt;
+
+&lt;h3 id=&quot;chiffrement-authentifié-par-clé-publique&quot;&gt;Chiffrement authentifié par clé publique&lt;/h3&gt;
+
+&lt;p&gt;Une des façons dont Sodium brille vraiment est la cryptographie à clé publique.&lt;br /&gt;
+Dans ce paradigme, chaque utilisateur a une paire de clés - une clé est gardée 
+secrète tandis que l’autre est partagée avec le monde.&lt;br /&gt;
+N’importe qui peut chiffrer un message pour un utilisateur particulier avec sa 
+clé publique; il ne peut être lu qu’avec sa clé privée.&lt;br /&gt;
+De même, un utilisateur peut signer une donnée avec sa clé privée; un tiers 
+peut utiliser la clé publique déjà distribuée pour vérifier la signature.
+Beaucoup de gens sont familiers avec 
+&lt;a href=&quot;https://fr.wikipedia.org/wiki/Chiffrement_RSA&quot;&gt;RSA&lt;/a&gt;, qui est un ancien style 
+de cryptographie à clé publique qui utilise de grands nombres premiers, 
+l’exponentiation et l’arithmétique modulo pour construire la sécurité.  &lt;br /&gt;
+Les clés concernées doivent être assez grandes pour garantir la confidentialité; 
+l’&lt;a href=&quot;https://www.nist.gov/&quot;&gt;Institut National des Normes et de la Technologie&lt;/a&gt; 
+recommande des clés &lt;a href=&quot;https://www.keylength.com/fr/4/&quot;&gt;RSA d’au moins 3072 bits&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;De même, Sodium introduit des méthodes simples pour alimenter le cryptographe 
+avec des clés asymétriques (où une clé publique est distribuée pour le chiffrage, 
+et une clé privée est utilisée pour le déchiffrage).&lt;br /&gt;
+Ces fonctions sont simplement nommées &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sodium_crypto_box()&lt;/code&gt; et 
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sodium_crypto_box_open()&lt;/code&gt;.&lt;br /&gt;
+Comme pour le modèle de clé secrète ci-dessus, le chiffrage nécessite un nonce 
+unique pour chaque opération (et le déchiffrage nécessite le même nonce).&lt;br /&gt;
+En utilisant un chiffrage authentifié par clé publique, Bob peut chiffrer un 
+message confidentiel spécifiquement pour Alice, en utilisant la clé publique 
+d’Alice.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-php&quot; data-lang=&quot;php&quot;&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;?php&lt;/span&gt;
+
+&lt;span class=&quot;cd&quot;&gt;/**
+ * La fonction sodium_crypto_box_keypair() génère aléatoirement une clé secrète
+ * et une clé publique correspondante.
+ */&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$aliceKeypair&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sodium_crypto_box_keypair&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$alicePublicKey&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sodium_crypto_box_publickey&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$aliceKeypair&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$aliceSecretKey&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sodium_crypto_box_secretkey&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$aliceKeypair&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;nv&quot;&gt;$bobKeypair&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sodium_crypto_box_keypair&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$bobPublicKey&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sodium_crypto_box_publickey&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$bobKeypair&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$bobSecretKey&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sodium_crypto_box_secretkey&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$bobKeypair&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;nv&quot;&gt;$message&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;Bonjour, c\&apos;est Alice.&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;cd&quot;&gt;/**
+ * Le nombre arbitraire n&apos;a pas besoin d&apos;être confidentiel, mais il doit être
+ * utilisé avec une seule invocation de crypto_box_open() pour une paire
+ * particulière de clés publiques et secrètes.
+ */&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$nonce&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;random_bytes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;SODIUM_CRYPTO_SECRETBOX_NONCEBYTES&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;cd&quot;&gt;/**
+ * Créer une paire de clés à partir d&apos;une clé secrète (celle d&apos;alice) et d&apos;une
+ * clé publique (bob)
+ */&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$aliceToBobKeyPair&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sodium_crypto_box_keypair_from_secretkey_and_publickey&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$aliceSecretKey&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$bobPublicKey&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// Chiffrer le message&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$aliceToBobCiphertext&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sodium_crypto_box&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$nonce&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$aliceToBobKeyPair&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;cd&quot;&gt;/**
+ * Créer une paire de clés inverse pour déchiffrer le message
+ */&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$bobToAliceKp&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sodium_crypto_box_keypair_from_secretkey_and_publickey&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$bobSecretKey&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$alicePublicKey&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;nv&quot;&gt;$aliceMessageDecryptedByBob&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sodium_crypto_box_open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$aliceToBobCiphertext&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$nonce&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$bobToAliceKp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$aliceMessageDecryptedByBob&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;PHP_EOL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://3v4l.org/UtnS7&quot;&gt;L’exemple à tester online&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Bon à part la fonction &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sodium_crypto_box_keypair_from_secretkey_and_publickey&lt;/code&gt; 
+qui a un nom 10 fois trop long, elle s’occupe de tout faire automatiquement.&lt;br /&gt;
+L’équivalent sur l’API libsodium serait la fonction &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;crypto_box_open_easy()&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;En envoyant un message à un tiers, vous envoyez le texte chiffré, le nonce qui 
+a servi à le générer, ainsi que votre clé publique.&lt;br /&gt;
+Lorsque Sodium commence à déchiffrer le message, il vérifiera un code 
+d’authentification du message pour authentifier le message et utilisera votre 
+clé privée pour l’authentifier et le déchiffrer.&lt;br /&gt;
+Non seulement le destinataire peut vérifier que vous avez bien envoyé le 
+message, mais il peut aussi vérifier que quelqu’un d’autre l’a manipulé.&lt;br /&gt;
+Comme pour le déchiffrage symétrique ci-dessus, cette opération est authentifiée.&lt;br /&gt;
+Si le MAC apposé sur le message n’est pas validé, le message a été manipulé en 
+transit et l’opération de déchiffrage est interrompue.&lt;/p&gt;
+
+&lt;p&gt;Voilà pour un petit tour du propriétaire !&lt;br /&gt;
+Pour plus d’informations vous pouvez aller lire la documentation de 
+&lt;a href=&quot;https://download.libsodium.org/doc/&quot;&gt;sodium&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Et n’oubliez pas ;)&lt;br /&gt;
+&lt;a href=&quot;https://i.imgur.com/SyOejxK.gif&quot;&gt;On dit chiffrer pas crypter&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;P.S. : Après avoir discuté avec &lt;a href=&quot;https://twitter.com/greg0ire&quot;&gt;@greg0ire&lt;/a&gt;, voici 
+une définition de la différence entre un MAC et une signature :&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Ils sont utilisés dans des contextes complètement différents.&lt;br /&gt;
+Dans le chiffrement à clé publique, il y a la notion de signature qui protège 
+l’authenticité de l’expéditeur.&lt;br /&gt;
+La clé secrète est utilisée comme clé de signature et tout le monde peut 
+vérifier son exactitude.&lt;br /&gt;
+Et de l’autre côté, dans le cryptage symétrique, il y a la notion de MAC qui 
+protège l’intégrité du message avec une clé MAC convenue entre l’expéditeur et 
+le destinataire.&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
+        <pubDate>Thu, 07 Dec 2017 00:00:00 +0100</pubDate>
+        <link>http://roukmoute.github.io/php/2017/12/07/php_7_2_libsodium/</link>
+        <guid isPermaLink="true">http://roukmoute.github.io/php/2017/12/07/php_7_2_libsodium/</guid>
+      </item>
+    
+      <item>
+        <title>Premier post</title>
+        <description>&lt;p&gt;C’est le premier post sur mon blog.&lt;br /&gt;
+Par conséquent, il ne s’agit pas de quelque chose en particulier — 
+juste une introduction et ma façon de dire bonjour.&lt;br /&gt;
+Ce blog sera principalement consacré aux idées de développement de logiciels.&lt;br /&gt;
+Je suis passionné par la qualité des logiciels, 
+et je n’écrirai que sur mes idées et opinions à ce sujet.&lt;/p&gt;
+
+&lt;p&gt;Quoi qu’il en soit, bienvenue sur mon blog.&lt;br /&gt;
+Ensemble, voyons comment ça se passe ! :)&lt;/p&gt;
+</description>
+        <pubDate>Fri, 01 Dec 2017 00:00:00 +0100</pubDate>
+        <link>http://roukmoute.github.io/autre/2017/12/01/first-post/</link>
+        <guid isPermaLink="true">http://roukmoute.github.io/autre/2017/12/01/first-post/</guid>
+      </item>
+    
+  </channel>
+</rss>

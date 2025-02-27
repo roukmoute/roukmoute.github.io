@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Rencontre avec Libsodium &#8211; Le blog de Roukmoute</title>
+    <link rel="dns-prefetch" href="//maxcdn.bootstrapcdn.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Venez découvrir la bibliothèque de chiffrement Libsodium — PHP 7.2.0">
+    <meta name="robots" content="all">
+    <meta name="author" content="Mathias STRASSER">
+    
+    <meta name="keywords" content="php">
+    <link rel="canonical" href="http://roukmoute.github.io/php/2017/12/07/php_7_2_libsodium/">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for Le blog de Roukmoute" href="/feed.xml" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?202502271813" type="text/css">
+    <link rel="stylesheet" href="/css/syntax.css?202502271813" type="text/css">
+    <link rel="stylesheet" href="/css/custom.css?202502271813" type="text/css">
+
+    <!-- Fonts -->
+    
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300' rel='stylesheet' type='text/css'>
+    
+    
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    
+
+    <!-- MathJax -->
+    
+
+    <!-- Verifications -->
+    
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="fr_FR">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Rencontre avec Libsodium">
+    <meta property="og:description" content="Je blogue sur la programmation orientée objet, PHP, bonnes pratiques, etc. ; au moins un nouveau billet chaque semaine">
+    <meta property="og:url" content="http://roukmoute.github.io/php/2017/12/07/php_7_2_libsodium/">
+    <meta property="og:site_name" content="Le blog de Roukmoute">
+    
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+        <meta name="twitter:site" content="@roukmouteFr" />
+        <meta name="twitter:creator" content="@roukmouteFr" />
+    
+    <meta name="twitter:title" content="Rencontre avec Libsodium" />
+    <meta name="twitter:description" content="Venez découvrir la bibliothèque de chiffrement Libsodium — PHP 7.2.0" />
+    <meta name="twitter:url" content="http://roukmoute.github.io/php/2017/12/07/php_7_2_libsodium/" />
+    
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+
+    
+</head>
+
+<body class="site">
+  
+	
+
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="http://roukmoute.github.io" class="site-title">Le blog de Roukmoute</a>
+      <nav class="site-nav">
+        
+
+
+
+    
+    
+    
+    
+        <a href="/about/">À propos de moi</a>
+    
+
+    
+
+
+      </nav>
+      <div class="clearfix"></div>
+      
+        <div class="social-icons">
+  <div class="social-icons-right">
+    
+      <a class="fa fa-github" href="https://github.com/roukmoute"></a>
+    
+    
+    <a class="fa fa-reddit" href="https://reddit.com/user/roukmoute"></a>
+    
+    
+    
+      <a class="fa fa-stack-overflow" href="https://stackoverflow.com/users/714996"></a>
+    
+    <a class="fa fa-rss" href="/feed.xml"></a>
+    
+      <a class="fa fa-twitter" href="https://twitter.com/roukmouteFr"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-envelope" href="mailto:contact@roukmoute.fr"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-telegram" href="https://t.me/Roukmoute"></a>
+    
+    
+  </div>
+  <div class="right">
+    
+    
+    
+  </div>
+</div>
+<div class="clearfix"></div>
+
+      
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>Rencontre avec Libsodium</h1>
+  <span class="post-meta">07/12/2017</span><br>
+  
+  <span class="post-meta small">
+  
+    temps de lecture ≈13 min
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <p>Ca y’est !<br />
+A moins d’être resté cloîtré dans une grotte, vous aurez largement lu que PHP 
+7.2 est sorti depuis exactement une semaine !<br />
+Cette nouvelle version apporte plusieurs nouveautés 
+(<a href="https://wiki.php.net/rfc/object-typehint">typage en <code class="language-plaintext highlighter-rouge">object</code></a>, 
+<a href="http://php.net/archive/2017.php#id2017-11-30-1">etc.</a>), et introduit plusieurs 
+améliorations de sécurité.<br />
+Dont une nouvelle extension <a href="https://download.libsodium.org/doc/">sodium</a> qui 
+fait de PHP le premier langage de programmation à adopter le chiffrement 
+moderne dans sa bibliothèque standard !</p>
+
+<p>Sodium est une bibliothèque cryptographique qui prend en charge des abstractions 
+de haut niveau pour le chiffrement, le déchiffrement, la signature, 
+le hachage des mots de passe et plus encore.<br />
+C’est une copie d’un projet antérieur, <a href="http://nacl.cr.yp.to/">NaCl</a>, 
+une bibliothèque de réseaux et de cryptographie.<br />
+L’objectif des deux projets est de fournir aux programmeurs un outil rapide et 
+facile à utiliser pour travailler avec le chiffrement en toute sécurité et avec 
+lequel ils peuvent construire des outils encore plus performants pour les 
+utilisateurs finaux.</p>
+
+<p>Contrairement à de nombreuses autres bibliothèques cryptographiques, Sodium se 
+concentre sur les schémas de chiffrage authentifiés.<br />
+Cela signifie que chaque pièce de données chiffrées porte automatiquement un 
+code d’authentification de message (MAC, Message Authentication Code) qui peut 
+valider l’intégrité des données elles-mêmes.<br />
+Si le MAC s’avère invalide, Sodium produira immédiatement une erreur.<br />
+Utiliser un MAC pour valider un message chiffré n’est pas en soi un trait 
+unique.<br />
+Cependant, beaucoup d’autres bibliothèques laisseront au développeur final le 
+soin d’implémenter la validation MAC.<br />
+Sodium intègre cette primitive dans la bibliothèque elle-même afin de mieux 
+faire respecter les bonnes pratiques en matière d’intégrité des messages.</p>
+
+<p>La force d’une clé privée RSA est liée à la fois à sa longueur et à la 
+puissance de calcul d’un attaquant.<br />
+Une clé plus longue nécessite plus de puissance de calcul pour déchiffrer et 
+rend donc chaque “devinette” d’un attaquant quelque peu coûteux.<br />
+Au fur et à mesure que les ordinateurs gagnent en vitesse et en performance 
+globale, les clés autrefois considérées comme sûres deviennent faibles.</p>
+
+<p>Donc quand vous créez une clé secrète, appelée passphrase, arrêtez de rentrer 
+un mot de passe et tapez réellement une phrase ;)</p>
+
+<p>Sodium utilise un autre type de mathématiques pour la cryptographie.<br />
+Plutôt que de miser sur les nombres premiers et la factorisation, Sodium utilise 
+des calculs mathématiques défini par une <a href="https://www.miximum.fr/blog/cryptographie-courbes-elliptiques-ecdsa/">courbe elliptique</a>.<br />
+Le calcul lui-même est un peu plus complexe, mais donne une relation de clé 
+publique/privée similaire à la clé RSA traditionnelle.<br />
+Cependant, en raison des calculs mathématiques, une clé elliptique de 256 bits 
+est aussi puissante qu’une clé RSA de 3072 bits.</p>
+
+<p>Bien que Sodium soit pris en charge nativement à partir de PHP 7.2, certains 
+projets pourraient vouloir exploiter les mêmes interfaces cryptographiques sur 
+des platesformes utilisant des versions plus anciennes de PHP.<br />
+Heureusement, c’est possible grâce à deux projets.<br />
+Avant que Sodium ne soit en PHP nativement, il était disponible sous forme 
+d’extension <a href="https://pecl.php.net/package/libsodium">PECL</a>.<br />
+Toute personne exécutant au moins PHP 7.0 peut installer le module PECL et aura 
+le même niveau de fonctionnalité et de support que ceux qui utilisent les 
+compilations natives en 7.2.<br />
+Le module PECL et l’extension PHP du noyau sont écrits par les mêmes auteurs, 
+de sorte qu’il n’ y a aucun compromis sur les environnements plus anciens.</p>
+
+<p>Certains développeurs n’ont pas encore mis à jour vers PHP7, cependant.<br />
+Pour ces équipes, le module <a href="https://github.com/paragonie/sodium_compat"><code class="language-plaintext highlighter-rouge">sodium_compat</code></a> 
+de Paragon Initiative9 est la voie à suivre.<br />
+Ce module implémente Sodium en PHP s’il n’ y a pas d’extension native disponible 
+pour exposer l’API.<br />
+Il est beaucoup plus lent à chiffrer et déchiffrer de cette façon mais signifie 
+que les anciens serveurs peuvent toujours utiliser Sodium même sans 
+distribution binaire.<br />
+En fait, <code class="language-plaintext highlighter-rouge">sodium_compat</code> est une approche solide pour tous ceux qui travaillent 
+avec Sodium et qui souhaitent maintenir une rétrocompatibilité avec PHP.<br />
+Le module essaiera d’utiliser les fonctionnalités natives de PHP 7.2 si elles 
+sont disponibles.<br />
+Il recherchera automatiquement l’extension PECL sur les anciens systèmes et 
+l’utilisera si elle est prise en charge.<br />
+Enfin, sur les anciens systèmes sans module PECL pour Sodium, le polyfill 
+chargera une implémentation PHP des primitives cryptographiques.<br />
+L’utilisation de <code class="language-plaintext highlighter-rouge">sodium_compat</code> signifie que vous pouvez écrire votre code une 
+fois puis le reporter à la bibliothèque pour choisir la meilleure implémentation<br />
+pour vous.</p>
+
+<h3 id="comment-chiffrer-les-données-">Comment chiffrer les données ?</h3>
+
+<p>Libsodium rend la cryptographie à clé symétrique (où une seule clé de 
+chiffrage/déchiffrage est partagée par les deux parties impliquées) simple avec 
+les fonctions <code class="language-plaintext highlighter-rouge">sodium_crypto_secretbox()</code> et <code class="language-plaintext highlighter-rouge">sodium_crypto_secretbox_open()</code>.<br />
+La première fonction est utilisée pour chiffrer un message de chaîne de 
+caractères avec un nombre arbitraire aléatoire et une clé symétrique spécifique.</p>
+
+<figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+
+<span class="c1">// Création nombre arbitraire</span>
+<span class="nv">$nonce</span> <span class="o">=</span> <span class="nb">random_bytes</span><span class="p">(</span><span class="no">SODIUM_CRYPTO_SECRETBOX_NONCEBYTES</span><span class="p">);</span>
+
+<span class="c1">// Création d'une clé secrète</span>
+<span class="nv">$key</span> <span class="o">=</span> <span class="nb">sodium_crypto_secretbox_keygen</span><span class="p">();</span>
+
+<span class="c1">// Notre message à chiffrer</span>
+<span class="nv">$message</span> <span class="o">=</span> <span class="s1">'Notre message super secret!'</span><span class="p">;</span>
+
+<span class="cd">/**
+ * Chiffrer le message, et stocker le texte chiffré résultant avec le nonce.
+ * Contrairement à la clé, le nonce n'a pas besoin d'être secret tant qu'il 
+ * continue d'être généré aléatoirement à chaque fois.
+ */</span>
+<span class="nv">$cipher</span> <span class="o">=</span> <span class="nb">sodium_crypto_secretbox</span><span class="p">(</span><span class="nv">$message</span><span class="p">,</span> <span class="nv">$nonce</span><span class="p">,</span> <span class="nv">$key</span><span class="p">);</span>
+
+<span class="c1">// Déchiffrer le texte chiffré en utilisant la même clé et nonce</span>
+<span class="nv">$decipher</span> <span class="o">=</span> <span class="nb">sodium_crypto_secretbox_open</span><span class="p">(</span><span class="nv">$cipher</span><span class="p">,</span> <span class="nv">$nonce</span><span class="p">,</span> <span class="nv">$key</span><span class="p">);</span>
+
+<span class="k">echo</span> <span class="nv">$decipher</span> <span class="mf">.</span> <span class="kc">PHP_EOL</span><span class="p">;</span></code></pre></figure>
+
+<p><a href="https://3v4l.org/CLWVB">L’exemple à tester online</a></p>
+
+<p>La clé est un secret partagé; notre nonce doit être unique pour chaque 
+opération de chiffrage mais ne doit pas être gardé secret.<br />
+Déchiffrer notre message est exactement comme le chiffrage, seulement à l’envers.<br />
+Libsodium utilise un chiffrage authentifié pour chaque transaction.<br />
+Le message est à la fois chiffré et muni d’un code d’authentification de message 
+(MAC) pour vérifier que le message n’ a pas été falsifié.<br />
+Lors du déchiffrage du message, Sodium vérifiera que personne n’a altéré le 
+message et vérifiera automatiquement l’erreur s’il a été modifié.</p>
+
+<h3 id="chiffrement-authentifié-par-clé-publique">Chiffrement authentifié par clé publique</h3>
+
+<p>Une des façons dont Sodium brille vraiment est la cryptographie à clé publique.<br />
+Dans ce paradigme, chaque utilisateur a une paire de clés - une clé est gardée 
+secrète tandis que l’autre est partagée avec le monde.<br />
+N’importe qui peut chiffrer un message pour un utilisateur particulier avec sa 
+clé publique; il ne peut être lu qu’avec sa clé privée.<br />
+De même, un utilisateur peut signer une donnée avec sa clé privée; un tiers 
+peut utiliser la clé publique déjà distribuée pour vérifier la signature.
+Beaucoup de gens sont familiers avec 
+<a href="https://fr.wikipedia.org/wiki/Chiffrement_RSA">RSA</a>, qui est un ancien style 
+de cryptographie à clé publique qui utilise de grands nombres premiers, 
+l’exponentiation et l’arithmétique modulo pour construire la sécurité.  <br />
+Les clés concernées doivent être assez grandes pour garantir la confidentialité; 
+l’<a href="https://www.nist.gov/">Institut National des Normes et de la Technologie</a> 
+recommande des clés <a href="https://www.keylength.com/fr/4/">RSA d’au moins 3072 bits</a>.</p>
+
+<p>De même, Sodium introduit des méthodes simples pour alimenter le cryptographe 
+avec des clés asymétriques (où une clé publique est distribuée pour le chiffrage, 
+et une clé privée est utilisée pour le déchiffrage).<br />
+Ces fonctions sont simplement nommées <code class="language-plaintext highlighter-rouge">sodium_crypto_box()</code> et 
+<code class="language-plaintext highlighter-rouge">sodium_crypto_box_open()</code>.<br />
+Comme pour le modèle de clé secrète ci-dessus, le chiffrage nécessite un nonce 
+unique pour chaque opération (et le déchiffrage nécessite le même nonce).<br />
+En utilisant un chiffrage authentifié par clé publique, Bob peut chiffrer un 
+message confidentiel spécifiquement pour Alice, en utilisant la clé publique 
+d’Alice.</p>
+
+<figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+
+<span class="cd">/**
+ * La fonction sodium_crypto_box_keypair() génère aléatoirement une clé secrète
+ * et une clé publique correspondante.
+ */</span>
+<span class="nv">$aliceKeypair</span> <span class="o">=</span> <span class="nb">sodium_crypto_box_keypair</span><span class="p">();</span>
+<span class="nv">$alicePublicKey</span> <span class="o">=</span> <span class="nb">sodium_crypto_box_publickey</span><span class="p">(</span><span class="nv">$aliceKeypair</span><span class="p">);</span>
+<span class="nv">$aliceSecretKey</span> <span class="o">=</span> <span class="nb">sodium_crypto_box_secretkey</span><span class="p">(</span><span class="nv">$aliceKeypair</span><span class="p">);</span>
+
+<span class="nv">$bobKeypair</span> <span class="o">=</span> <span class="nb">sodium_crypto_box_keypair</span><span class="p">();</span>
+<span class="nv">$bobPublicKey</span> <span class="o">=</span> <span class="nb">sodium_crypto_box_publickey</span><span class="p">(</span><span class="nv">$bobKeypair</span><span class="p">);</span>
+<span class="nv">$bobSecretKey</span> <span class="o">=</span> <span class="nb">sodium_crypto_box_secretkey</span><span class="p">(</span><span class="nv">$bobKeypair</span><span class="p">);</span>
+
+<span class="nv">$message</span> <span class="o">=</span> <span class="s1">'Bonjour, c\'est Alice.'</span><span class="p">;</span>
+
+<span class="cd">/**
+ * Le nombre arbitraire n'a pas besoin d'être confidentiel, mais il doit être
+ * utilisé avec une seule invocation de crypto_box_open() pour une paire
+ * particulière de clés publiques et secrètes.
+ */</span>
+<span class="nv">$nonce</span> <span class="o">=</span> <span class="nb">random_bytes</span><span class="p">(</span><span class="no">SODIUM_CRYPTO_SECRETBOX_NONCEBYTES</span><span class="p">);</span>
+
+<span class="cd">/**
+ * Créer une paire de clés à partir d'une clé secrète (celle d'alice) et d'une
+ * clé publique (bob)
+ */</span>
+<span class="nv">$aliceToBobKeyPair</span> <span class="o">=</span> <span class="nb">sodium_crypto_box_keypair_from_secretkey_and_publickey</span><span class="p">(</span><span class="nv">$aliceSecretKey</span><span class="p">,</span> <span class="nv">$bobPublicKey</span><span class="p">);</span>
+
+<span class="c1">// Chiffrer le message</span>
+<span class="nv">$aliceToBobCiphertext</span> <span class="o">=</span> <span class="nb">sodium_crypto_box</span><span class="p">(</span><span class="nv">$message</span><span class="p">,</span> <span class="nv">$nonce</span><span class="p">,</span> <span class="nv">$aliceToBobKeyPair</span><span class="p">);</span>
+
+<span class="cd">/**
+ * Créer une paire de clés inverse pour déchiffrer le message
+ */</span>
+<span class="nv">$bobToAliceKp</span> <span class="o">=</span> <span class="nb">sodium_crypto_box_keypair_from_secretkey_and_publickey</span><span class="p">(</span><span class="nv">$bobSecretKey</span><span class="p">,</span> <span class="nv">$alicePublicKey</span><span class="p">);</span>
+
+<span class="nv">$aliceMessageDecryptedByBob</span> <span class="o">=</span> <span class="nb">sodium_crypto_box_open</span><span class="p">(</span><span class="nv">$aliceToBobCiphertext</span><span class="p">,</span> <span class="nv">$nonce</span><span class="p">,</span> <span class="nv">$bobToAliceKp</span><span class="p">);</span>
+
+<span class="k">echo</span> <span class="nv">$aliceMessageDecryptedByBob</span> <span class="mf">.</span> <span class="kc">PHP_EOL</span><span class="p">;</span></code></pre></figure>
+
+<p><a href="https://3v4l.org/UtnS7">L’exemple à tester online</a></p>
+
+<p>Bon à part la fonction <code class="language-plaintext highlighter-rouge">sodium_crypto_box_keypair_from_secretkey_and_publickey</code> 
+qui a un nom 10 fois trop long, elle s’occupe de tout faire automatiquement.<br />
+L’équivalent sur l’API libsodium serait la fonction <code class="language-plaintext highlighter-rouge">crypto_box_open_easy()</code>.</p>
+
+<p>En envoyant un message à un tiers, vous envoyez le texte chiffré, le nonce qui 
+a servi à le générer, ainsi que votre clé publique.<br />
+Lorsque Sodium commence à déchiffrer le message, il vérifiera un code 
+d’authentification du message pour authentifier le message et utilisera votre 
+clé privée pour l’authentifier et le déchiffrer.<br />
+Non seulement le destinataire peut vérifier que vous avez bien envoyé le 
+message, mais il peut aussi vérifier que quelqu’un d’autre l’a manipulé.<br />
+Comme pour le déchiffrage symétrique ci-dessus, cette opération est authentifiée.<br />
+Si le MAC apposé sur le message n’est pas validé, le message a été manipulé en 
+transit et l’opération de déchiffrage est interrompue.</p>
+
+<p>Voilà pour un petit tour du propriétaire !<br />
+Pour plus d’informations vous pouvez aller lire la documentation de 
+<a href="https://download.libsodium.org/doc/">sodium</a>.</p>
+
+<p>Et n’oubliez pas ;)<br />
+<a href="https://i.imgur.com/SyOejxK.gif">On dit chiffrer pas crypter</a></p>
+
+<p>P.S. : Après avoir discuté avec <a href="https://twitter.com/greg0ire">@greg0ire</a>, voici 
+une définition de la différence entre un MAC et une signature :</p>
+
+<blockquote>
+  <p>Ils sont utilisés dans des contextes complètement différents.<br />
+Dans le chiffrement à clé publique, il y a la notion de signature qui protège 
+l’authenticité de l’expéditeur.<br />
+La clé secrète est utilisée comme clé de signature et tout le monde peut 
+vérifier son exactitude.<br />
+Et de l’autre côté, dans le cryptage symétrique, il y a la notion de MAC qui 
+protège l’intégrité du message avec une clé MAC convenue entre l’expéditeur et 
+le destinataire.</p>
+</blockquote>
+
+</article>
+
+
+
+
+
+
+
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname  = 'roukmoute';
+    var disqus_identifier = '/php/2017/12/07/php_7_2_libsodium';
+    var disqus_title      = "Rencontre avec Libsodium";
+
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+    <small>
+      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
+      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">GitHub</a>.
+    </small>
+  </div>
+</footer>
+
+
+</body>
+</html>

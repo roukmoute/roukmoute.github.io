@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Factory Method — Exemple de code &#8211; Le blog de Roukmoute</title>
+    <link rel="dns-prefetch" href="//maxcdn.bootstrapcdn.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Cet exemple reprend celui fourni dans le livre du GoF">
+    <meta name="robots" content="all">
+    <meta name="author" content="Mathias STRASSER">
+    
+    <meta name="keywords" content="design_pattern, php">
+    <link rel="canonical" href="http://roukmoute.github.io/design_pattern/php/2018/02/11/factory_method_exemple/">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for Le blog de Roukmoute" href="/feed.xml" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?202502271813" type="text/css">
+    <link rel="stylesheet" href="/css/syntax.css?202502271813" type="text/css">
+    <link rel="stylesheet" href="/css/custom.css?202502271813" type="text/css">
+
+    <!-- Fonts -->
+    
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300' rel='stylesheet' type='text/css'>
+    
+    
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    
+
+    <!-- MathJax -->
+    
+
+    <!-- Verifications -->
+    
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="fr_FR">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Factory Method — Exemple de code">
+    <meta property="og:description" content="Je blogue sur la programmation orientée objet, PHP, bonnes pratiques, etc. ; au moins un nouveau billet chaque semaine">
+    <meta property="og:url" content="http://roukmoute.github.io/design_pattern/php/2018/02/11/factory_method_exemple/">
+    <meta property="og:site_name" content="Le blog de Roukmoute">
+    
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+        <meta name="twitter:site" content="@roukmouteFr" />
+        <meta name="twitter:creator" content="@roukmouteFr" />
+    
+    <meta name="twitter:title" content="Factory Method — Exemple de code" />
+    <meta name="twitter:description" content="Cet exemple reprend celui fourni dans le livre du GoF" />
+    <meta name="twitter:url" content="http://roukmoute.github.io/design_pattern/php/2018/02/11/factory_method_exemple/" />
+    
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+
+    
+</head>
+
+<body class="site">
+  
+	
+
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="http://roukmoute.github.io" class="site-title">Le blog de Roukmoute</a>
+      <nav class="site-nav">
+        
+
+
+
+    
+    
+    
+    
+        <a href="/about/">À propos de moi</a>
+    
+
+    
+
+
+      </nav>
+      <div class="clearfix"></div>
+      
+        <div class="social-icons">
+  <div class="social-icons-right">
+    
+      <a class="fa fa-github" href="https://github.com/roukmoute"></a>
+    
+    
+    <a class="fa fa-reddit" href="https://reddit.com/user/roukmoute"></a>
+    
+    
+    
+      <a class="fa fa-stack-overflow" href="https://stackoverflow.com/users/714996"></a>
+    
+    <a class="fa fa-rss" href="/feed.xml"></a>
+    
+      <a class="fa fa-twitter" href="https://twitter.com/roukmouteFr"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-envelope" href="mailto:contact@roukmoute.fr"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-telegram" href="https://t.me/Roukmoute"></a>
+    
+    
+  </div>
+  <div class="right">
+    
+    
+    
+  </div>
+</div>
+<div class="clearfix"></div>
+
+      
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>Factory Method — Exemple de code</h1>
+  <span class="post-meta">11/02/2018</span><br>
+  
+  <span class="post-meta small">
+  
+    temps de lecture ≈2 min
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <p>Voici la suite de <a href="/design_patterns/2017/12/30/factory_method_les_fondements/">cet article</a>.</p>
+
+<p><a href="https://github.com/roukmoute/design-patterns/tree/master/Creational/FactoryMethod/Gof">L’exemple suivant</a> 
+enseigne le modèle de la Factory Method telle qu’elle est expliquée dans le Gof.</p>
+
+<p>Cet exemple montre comment une pseudo-suite d’applications de bureautique peut 
+partager du code et reporter les décisions de création à des sous-classes.</p>
+
+<p>Parmi les <a href="https://github.com/roukmoute/design-patterns/blob/master/Creational/FactoryMethod/Gof/Application.php">Applications</a> 
+de cette suite il y a :</p>
+
+<ul>
+  <li><a href="https://github.com/roukmoute/design-patterns/blob/master/Creational/FactoryMethod/Gof/SpreadsheetApplication.php">SpreedSheetApplication</a></li>
+  <li><a href="https://github.com/roukmoute/design-patterns/blob/master/Creational/FactoryMethod/Gof/EditorApplication.php">EditorApplication</a></li>
+</ul>
+
+<p>Naturellement pour chaque application de la suite, il y a un type de <a href="https://github.com/roukmoute/design-patterns/blob/master/Creational/FactoryMethod/Gof/Document.php">Document</a> 
+correspondant :</p>
+
+<ul>
+  <li><a href="https://github.com/roukmoute/design-patterns/blob/master/Creational/FactoryMethod/Gof/SpreadsheetDocument.php">SpreasheetDocument</a></li>
+  <li><a href="https://github.com/roukmoute/design-patterns/blob/master/Creational/FactoryMethod/Gof/EditorDocument.php">EditorDocument</a></li>
+</ul>
+
+<p>la hiérarchie de l’application ressemble à ceci :
+<img src="https://user-images.githubusercontent.com/2140469/36077136-096a05a4-0f67-11e8-8f1c-26ea90759224.png" alt="application_hierarchy" /></p>
+
+<p>Nous avons notre application générique abstraite ainsi que les sous-classes 
+<code class="language-plaintext highlighter-rouge">EditorApplication</code> et <code class="language-plaintext highlighter-rouge">SpreadsheetApplication</code>.</p>
+
+<p>En effet il peut arriver d’avoir beaucoup de code en commun.<br />
+Du coup l’utilisation d’une classe parente prend tout son sens.<br />
+Pour rappel, cette classe peut être abstraite ou non si un comportement par 
+défaut est mis en place.<br />
+Ainsi on ne laisse que les méthodes qui se distinguent dans les sous-classes.</p>
+
+<p>Mais comment s’assurer que pour chaque sous-classe d’application, le type de 
+<code class="language-plaintext highlighter-rouge">Document</code> est correctement est créé ?</p>
+
+<p>Voici comment faire :<br />
+Dans la classe <code class="language-plaintext highlighter-rouge">Application</code>, on définit une <a href="https://github.com/roukmoute/design-patterns/blob/master/Creational/FactoryMethod/Gof/Application.php#L18">méthode abstraite</a>, 
+<code class="language-plaintext highlighter-rouge">createDocument()</code>, qui est chargée de s’assurer que les sous-classes créées, 
+ont le bon type de <code class="language-plaintext highlighter-rouge">Document</code> lorsqu’ils implémentent leur copie de 
+<code class="language-plaintext highlighter-rouge">createDocument()</code>.</p>
+
+<p>Par exemple, dans <code class="language-plaintext highlighter-rouge">EditorApplication</code>, l’implémentation de <code class="language-plaintext highlighter-rouge">createDocument()</code> 
+renvoie un nouveau document <code class="language-plaintext highlighter-rouge">EditorDocument</code>.<br />
+De même, l’implémentation de <code class="language-plaintext highlighter-rouge">createDocument()</code> par <code class="language-plaintext highlighter-rouge">SpreadsheetApplication</code> 
+renverra un <code class="language-plaintext highlighter-rouge">SpreadsheetDocument</code>.</p>
+
+<p>En appliquant la puissance du <a href="/programmation/2017/12/23/polymorphisme/">polymorphisme</a>, 
+nous avons veillé à ce que chaque sous-classe d’application renvoie 
+correctement la sous-classe <code class="language-plaintext highlighter-rouge">Document</code> correspondante.</p>
+
+</article>
+
+
+
+
+
+
+
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname  = 'roukmoute';
+    var disqus_identifier = '/design_pattern/php/2018/02/11/factory_method_exemple';
+    var disqus_title      = "Factory Method — Exemple de code";
+
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+    <small>
+      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
+      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">GitHub</a>.
+    </small>
+  </div>
+</footer>
+
+
+</body>
+</html>

@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Le polymorphisme &#8211; Le blog de Roukmoute</title>
+    <link rel="dns-prefetch" href="//maxcdn.bootstrapcdn.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Un peu d&apos;explication">
+    <meta name="robots" content="all">
+    <meta name="author" content="Mathias STRASSER">
+    
+    <meta name="keywords" content="programmation">
+    <link rel="canonical" href="http://roukmoute.github.io/programmation/2017/12/23/polymorphisme/">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for Le blog de Roukmoute" href="/feed.xml" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?202502271813" type="text/css">
+    <link rel="stylesheet" href="/css/syntax.css?202502271813" type="text/css">
+    <link rel="stylesheet" href="/css/custom.css?202502271813" type="text/css">
+
+    <!-- Fonts -->
+    
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300' rel='stylesheet' type='text/css'>
+    
+    
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    
+
+    <!-- MathJax -->
+    
+
+    <!-- Verifications -->
+    
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="fr_FR">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Le polymorphisme">
+    <meta property="og:description" content="Je blogue sur la programmation orientée objet, PHP, bonnes pratiques, etc. ; au moins un nouveau billet chaque semaine">
+    <meta property="og:url" content="http://roukmoute.github.io/programmation/2017/12/23/polymorphisme/">
+    <meta property="og:site_name" content="Le blog de Roukmoute">
+    
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+        <meta name="twitter:site" content="@roukmouteFr" />
+        <meta name="twitter:creator" content="@roukmouteFr" />
+    
+    <meta name="twitter:title" content="Le polymorphisme" />
+    <meta name="twitter:description" content="Un peu d'explication" />
+    <meta name="twitter:url" content="http://roukmoute.github.io/programmation/2017/12/23/polymorphisme/" />
+    
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+
+    
+</head>
+
+<body class="site">
+  
+	
+
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="http://roukmoute.github.io" class="site-title">Le blog de Roukmoute</a>
+      <nav class="site-nav">
+        
+
+
+
+    
+    
+    
+    
+        <a href="/about/">À propos de moi</a>
+    
+
+    
+
+
+      </nav>
+      <div class="clearfix"></div>
+      
+        <div class="social-icons">
+  <div class="social-icons-right">
+    
+      <a class="fa fa-github" href="https://github.com/roukmoute"></a>
+    
+    
+    <a class="fa fa-reddit" href="https://reddit.com/user/roukmoute"></a>
+    
+    
+    
+      <a class="fa fa-stack-overflow" href="https://stackoverflow.com/users/714996"></a>
+    
+    <a class="fa fa-rss" href="/feed.xml"></a>
+    
+      <a class="fa fa-twitter" href="https://twitter.com/roukmouteFr"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-envelope" href="mailto:contact@roukmoute.fr"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-telegram" href="https://t.me/Roukmoute"></a>
+    
+    
+  </div>
+  <div class="right">
+    
+    
+    
+  </div>
+</div>
+<div class="clearfix"></div>
+
+      
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>Le polymorphisme</h1>
+  <span class="post-meta">23/12/2017</span><br>
+  
+  <span class="post-meta small">
+  
+    temps de lecture ≈6 min
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <p>Le polymorphisme est beaucoup utilisé dans le langage informatique.
+Ce n’est pas bien compliqué à comprendre, mais souvent je trouve que cela peut 
+<a href="https://fr.wikipedia.org/wiki/Polymorphisme_(informatique)">partir bien loin</a>.</p>
+
+<p>Voici donc un petit article qui, je l’espère, vous permettra de comprendre ce 
+mot.</p>
+
+<p>Le polymorphisme pourrait avoir comme définition “une interface unique et un 
+fonctionnement multiple”.<br />
+Par exemple: <code class="language-plaintext highlighter-rouge">x</code> est une personne et chaque personne travaille différemment 
+donc <code class="language-plaintext highlighter-rouge">x</code> est une interface unique et son fonctionnement est multiple.</p>
+
+<p>La beauté du polymorphisme est que le code qui fonctionne avec les différentes 
+classes n’a pas besoin de savoir quelle classe il utilise puisqu’elles sont 
+toutes utilisées de la même façon.</p>
+
+<blockquote>
+  <p>
+    Une analogie du monde réel pour le polymorphisme est un bouton.  
+    Tout le monde sait comment utiliser un bouton: il suffit d'appuyer dessus.  
+    Ce qu'un bouton "fait", cependant, dépend de ce à quoi il est connecté et 
+    du contexte dans lequel il est utilisé — mais le résultat n'affecte pas la 
+    façon dont il est utilisé.  
+    Si votre patron vous dit d'appuyer sur un bouton, vous disposez déjà de 
+    toutes les informations nécessaires pour effectuer la tâche.
+  </p>
+  <p>    
+    Dans le monde de la programmation, le polymorphisme est utilisé pour rendre 
+    les applications plus modulaires et extensibles.  
+    Au lieu d'écrire plein de conditions décrivant une nouvelle action, vous 
+    créez des objets interchangeables que vous sélectionnez en fonction de vos 
+    besoins.  
+    C'est l'objectif fondamental du polymorphisme.
+  </p>
+  <footer><cite title="Steve Guidetti">Steve Guidetti</cite></footer>
+</blockquote>
+
+<p>Exemple simple avec la méthode <code class="language-plaintext highlighter-rouge">__toString</code> qui affiche toutes les données 
+actuellement stockées dans l’instance <code class="language-plaintext highlighter-rouge">Aircraft</code> :</p>
+
+<figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="kd">class</span> <span class="nc">Aircraft</span>
+<span class="p">{</span>
+    <span class="cd">/**
+     * @var string
+     */</span>
+    <span class="k">private</span> <span class="nv">$aircraftType</span><span class="p">;</span>
+    <span class="cd">/**
+     * @var string
+     */</span>
+    <span class="k">private</span> <span class="nv">$departureCity</span><span class="p">;</span>
+    <span class="cd">/**
+     * @var string
+     */</span>
+    <span class="k">private</span> <span class="nv">$arrivalCity</span><span class="p">;</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="n">__construct</span><span class="p">(</span>
+        <span class="kt">string</span> <span class="nv">$aircraftType</span><span class="p">,</span>
+        <span class="kt">string</span> <span class="nv">$departureCity</span><span class="p">,</span>
+        <span class="kt">string</span> <span class="nv">$arrivalCity</span>
+    <span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="n">aircraftType</span> <span class="o">=</span> <span class="nv">$aircraftType</span><span class="p">;</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="n">departureCity</span> <span class="o">=</span> <span class="nv">$departureCity</span><span class="p">;</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="n">arrivalCity</span> <span class="o">=</span> <span class="nv">$arrivalCity</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="n">__toString</span><span class="p">():</span> <span class="kt">string</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="nb">sprintf</span><span class="p">(</span>
+            <span class="s2">"Bienvenue à bord de notre %s.</span><span class="se">\n</span><span class="s2">"</span> <span class="mf">.</span>
+            <span class="s2">"Ce vol est en décollage imminent de %s et aura pour arrivée %s.</span><span class="se">\n</span><span class="s2">"</span> <span class="mf">.</span>
+            <span class="s2">"Merci, à très bientôt !"</span><span class="p">,</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="nf">aircraftType</span><span class="p">(),</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="nf">departureCity</span><span class="p">(),</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="nf">arrivalCity</span><span class="p">()</span>
+        <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="n">aircraftType</span><span class="p">():</span> <span class="kt">string</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="n">aircraftType</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="n">departureCity</span><span class="p">():</span> <span class="kt">string</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="n">departureCity</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="n">arrivalCity</span><span class="p">():</span> <span class="kt">string</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="n">arrivalCity</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p><a href="https://3v4l.org/FpTpB">L’exemple à tester en ligne</a></p>
+
+<p>Pour démontrer les caractéristiques polymorphes dans le langage PHP, on va 
+étendre notre classe <code class="language-plaintext highlighter-rouge">Aircraft</code> avec une classe <code class="language-plaintext highlighter-rouge">PrivateJet</code> et une classe 
+<code class="language-plaintext highlighter-rouge">LowCostAircraft</code>.<br />
+Pour le <code class="language-plaintext highlighter-rouge">PrivateJet</code>, on va ajouter un champ supplémentaire appelé 
+<code class="language-plaintext highlighter-rouge">airportDestination</code>, qui est une chaine de caractère qui indique… le nom de 
+l’aéroport de notre destination.</p>
+
+<p>Voici donc notre nouvelle classe :</p>
+
+<figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="kd">class</span> <span class="nc">PrivateJet</span> <span class="kd">extends</span> <span class="nc">Aircraft</span>
+<span class="p">{</span>
+    <span class="k">private</span> <span class="nv">$arrivalCity</span><span class="p">;</span>
+    <span class="cd">/**
+     * @var string
+     */</span>
+    <span class="k">private</span> <span class="nv">$airportDestination</span><span class="p">;</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="n">__construct</span><span class="p">(</span>
+        <span class="kt">string</span> <span class="nv">$aircraftType</span><span class="p">,</span>
+        <span class="kt">string</span> <span class="nv">$departureCity</span><span class="p">,</span>
+        <span class="kt">string</span> <span class="nv">$arrivalCity</span><span class="p">,</span>
+        <span class="kt">string</span> <span class="nv">$airportDestination</span>
+    <span class="p">)</span> <span class="p">{</span>
+        <span class="k">parent</span><span class="o">::</span><span class="nf">__construct</span><span class="p">(</span><span class="nv">$aircraftType</span><span class="p">,</span> <span class="nv">$departureCity</span><span class="p">,</span> <span class="nv">$arrivalCity</span><span class="p">);</span>
+
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="n">airportDestination</span> <span class="o">=</span> <span class="nv">$airportDestination</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="n">__toString</span><span class="p">():</span> <span class="kt">string</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="nb">sprintf</span><span class="p">(</span>
+            <span class="s2">"%s</span><span class="se">\n</span><span class="s2">"</span> <span class="mf">.</span>
+            <span class="s2">"Notre arrivé se fera à l'aéroport %s."</span><span class="p">,</span>
+            <span class="k">parent</span><span class="o">::</span><span class="nf">__toString</span><span class="p">(),</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="nf">airportDestination</span><span class="p">()</span>
+        <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="n">airportDestination</span><span class="p">():</span> <span class="kt">string</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="n">airportDestination</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p><a href="https://3v4l.org/eA0Zt">L’exemple à tester en ligne</a></p>
+
+<p>Notez que nous avons surchargé sur la méthode <code class="language-plaintext highlighter-rouge">__toString</code>.<br />
+Outre les informations fournies précédemment, la donnée supplémentaire sur le 
+nom de l’aéroport d’arrivée est incluse dans la sortie.</p>
+
+<p>Le polymorphisme offre de nombreux avantages.<br />
+Le gain le plus important se produit lorsque le même ensemble de conditions 
+apparaît à plusieurs endroits du programme.<br />
+Si vous voulez ajouter un nouveau type, vous devez trouver et mettre à jour 
+toutes les conditions.<br />
+Mais avec les sous-classes, il vous suffit de créer une nouvelle sous-classe et 
+de fournir les méthodes appropriées.</p>
+
+<p>Nous pouvons aussi modifier une autre méthode disponible :</p>
+
+<figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="kd">class</span> <span class="nc">LowCostAircraft</span> <span class="kd">extends</span> <span class="nc">Aircraft</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="n">__construct</span><span class="p">(</span>
+        <span class="kt">string</span> <span class="nv">$aircraftType</span><span class="p">,</span>
+        <span class="kt">string</span> <span class="nv">$departureCity</span><span class="p">,</span>
+        <span class="kt">string</span> <span class="nv">$arrivalCity</span>
+    <span class="p">)</span> <span class="p">{</span>
+        <span class="k">parent</span><span class="o">::</span><span class="nf">__construct</span><span class="p">(</span><span class="nv">$aircraftType</span><span class="p">,</span> <span class="nv">$departureCity</span><span class="p">,</span> <span class="nv">$arrivalCity</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="n">arrivalCity</span><span class="p">():</span> <span class="kt">string</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="nb">sprintf</span><span class="p">(</span><span class="s2">"%s.</span><span class="se">\n</span><span class="s2">Le moteur est le coeur d'un avion, mais le pilote est son âme"</span><span class="p">,</span> <span class="k">parent</span><span class="o">::</span><span class="nf">arrivalCity</span><span class="p">());</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p><a href="https://3v4l.org/ECneC">L’exemple à tester en ligne</a></p>
+
+<p>Pour résumer, nous avons trois classes. Chaque sous-classe surcharge une 
+méthode pour afficher finalement une information unique.</p>
+
+<h3 id="mais-en-fait-cest-juste-une-classe-abstraite-">Mais en fait, c’est juste une classe abstraite ?</h3>
+
+<p>C’est un peu plus que ça.  <br />
+Je dirai plus qu’il s’agit d’une implémentation, donc cela peut-être une classe 
+abstraite ou une interface.</p>
+
+<p>Les autres méthodes qui vont vouloir utiliser votre interface/abstraction n’ont 
+pas besoin de connaître les sous-classes, ce qui réduit les dépendances dans 
+votre système et facilite la mise à jour.</p>
+
+<p>La définition du polymorphisme dans le dictionnaire renvoie à un principe de la 
+biologie selon lequel un organisme ou une espèce peut avoir plusieurs formes ou 
+stades différents.<br />
+Ce principe peut également s’applique aussi à la programmation orientée objet 
+et aux langages comme le langage PHP.<br />
+Les sous-classes d’une classe peuvent définir leurs propres comportements 
+uniques tout en partageant certaines fonctionnalités de la classe parente.</p>
+
+<p>Le polymorphisme décrit un modèle de programmation orientée objet dans lequel 
+les classes ont des fonctionnalités différentes tout en partageant une 
+interface commune.</p>
+
+<p>Voilà pour ce court article :)</p>
+
+<p>Bonnes fêtes de Noël !</p>
+
+</article>
+
+
+
+
+
+
+
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname  = 'roukmoute';
+    var disqus_identifier = '/programmation/2017/12/23/polymorphisme';
+    var disqus_title      = "Le polymorphisme";
+
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+    <small>
+      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
+      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">GitHub</a>.
+    </small>
+  </div>
+</footer>
+
+
+</body>
+</html>

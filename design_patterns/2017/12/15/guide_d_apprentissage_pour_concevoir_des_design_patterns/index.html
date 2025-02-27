@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Guide d'apprentissage pour concevoir des Design Patterns &#8211; Le blog de Roukmoute</title>
+    <link rel="dns-prefetch" href="//maxcdn.bootstrapcdn.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Concepts essentiels et terminologie">
+    <meta name="robots" content="all">
+    <meta name="author" content="Mathias STRASSER">
+    
+    <meta name="keywords" content="design_patterns">
+    <link rel="canonical" href="http://roukmoute.github.io/design_patterns/2017/12/15/guide_d_apprentissage_pour_concevoir_des_design_patterns/">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for Le blog de Roukmoute" href="/feed.xml" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?202502271813" type="text/css">
+    <link rel="stylesheet" href="/css/syntax.css?202502271813" type="text/css">
+    <link rel="stylesheet" href="/css/custom.css?202502271813" type="text/css">
+
+    <!-- Fonts -->
+    
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300' rel='stylesheet' type='text/css'>
+    
+    
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    
+
+    <!-- MathJax -->
+    
+
+    <!-- Verifications -->
+    
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="fr_FR">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Guide d&apos;apprentissage pour concevoir des Design Patterns">
+    <meta property="og:description" content="Je blogue sur la programmation orientée objet, PHP, bonnes pratiques, etc. ; au moins un nouveau billet chaque semaine">
+    <meta property="og:url" content="http://roukmoute.github.io/design_patterns/2017/12/15/guide_d_apprentissage_pour_concevoir_des_design_patterns/">
+    <meta property="og:site_name" content="Le blog de Roukmoute">
+    
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+        <meta name="twitter:site" content="@roukmouteFr" />
+        <meta name="twitter:creator" content="@roukmouteFr" />
+    
+    <meta name="twitter:title" content="Guide d'apprentissage pour concevoir des Design Patterns" />
+    <meta name="twitter:description" content="Concepts essentiels et terminologie" />
+    <meta name="twitter:url" content="http://roukmoute.github.io/design_patterns/2017/12/15/guide_d_apprentissage_pour_concevoir_des_design_patterns/" />
+    
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+
+    
+</head>
+
+<body class="site">
+  
+	
+
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="http://roukmoute.github.io" class="site-title">Le blog de Roukmoute</a>
+      <nav class="site-nav">
+        
+
+
+
+    
+    
+    
+    
+        <a href="/about/">À propos de moi</a>
+    
+
+    
+
+
+      </nav>
+      <div class="clearfix"></div>
+      
+        <div class="social-icons">
+  <div class="social-icons-right">
+    
+      <a class="fa fa-github" href="https://github.com/roukmoute"></a>
+    
+    
+    <a class="fa fa-reddit" href="https://reddit.com/user/roukmoute"></a>
+    
+    
+    
+      <a class="fa fa-stack-overflow" href="https://stackoverflow.com/users/714996"></a>
+    
+    <a class="fa fa-rss" href="/feed.xml"></a>
+    
+      <a class="fa fa-twitter" href="https://twitter.com/roukmouteFr"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-envelope" href="mailto:contact@roukmoute.fr"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-telegram" href="https://t.me/Roukmoute"></a>
+    
+    
+  </div>
+  <div class="right">
+    
+    
+    
+  </div>
+</div>
+<div class="clearfix"></div>
+
+      
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>Guide d'apprentissage pour concevoir des Design Patterns</h1>
+  <span class="post-meta">15/12/2017</span><br>
+  
+  <span class="post-meta small">
+  
+    temps de lecture ≈4 min
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <h3 id="présentation-des-patterns">Présentation des Patterns</h3>
+
+<p>Les Patterns pour le développement sont l’un des thèmes les plus vieux qui 
+existent au sein de la communauté orientée objet.<br />
+L’emploi actuel du terme “Pattern” est dérivé des écrits de l’architecte 
+Christopher Alexander qui a rédigé plusieurs ouvrages sur le sujet de 
+l’urbanisme et de l’architecture du bâtiment.<br />
+Il ne s’agit ni plus ni moins que de la documentation des meilleures pratiques.</p>
+
+<h3 id="un-vocabulaire-commun-pour-les-gouverner-tous-">Un vocabulaire commun pour les gouverner tous !</h3>
+
+<p>C’est en apprenant et comprenant les Design Pattern que les développeurs 
+peuvent correctement s’entendre !<br />
+Ces Patterns ont été créés pour aider les concepteurs de logiciels à résoudre 
+les problèmes récurrents rencontrés tout au long du développement.<br />
+Les modèles sont utiles pour créer un langage commun pour communiquer des idées 
+et des expériences sur ces problèmes et leurs solutions.<br />
+Si tout le monde les connait, on peut donc raisonner bien plus facilement et
+intelligemment aux sujets à résoudre.</p>
+
+<h3 id="un-guide-">Un guide ?</h3>
+
+<p>Quand je parle de Design Pattern autour de moi, on arrive très vite au livre de 
+référence “Design Patterns: Elements of Reusable Objet-Oriented Software” du 
+Gang of Four.<br />
+On l’a tous déjà entendu au moins une fois, mais :</p>
+<ul>
+  <li>L’avons-nous lu en entier ?</li>
+  <li>L’avons-nous bien compris ?</li>
+  <li>Ne devrions-nous pas dire que nous l’avons “étudié” plutôt que “lu” ?</li>
+</ul>
+
+<p>Ainsi ce guide, qui sera écrit dans le temps, va permettre d’apprendre et 
+d’utiliser des Design Patterns, que simplement les avoir “lut”.<br />
+Et quand moi il me légitimera d’en apprendre davantage au moment de leurs 
+rédactions !<br />
+Je ne compte pas respecter le même ordre que le livre du GoF.<br />
+Les Designs Patterns sont divisés en trois catégories :</p>
+<ul>
+  <li>créatifs (création d’objets d’une manière adaptée à la situation)</li>
+  <li>structurels (facilitent la conception en identifiant une façon simple de 
+réaliser des relations entre les entités)</li>
+  <li>comportementaux (identifient les patrons de communication communs entre les 
+objets)</li>
+</ul>
+
+<p>Les Patterns sont dangereux, dans le sens où après avoir appris plusieurs
+Patterns, nous allons vouloir les utiliser à tout bout de champ, sans avoir
+pris le temps de le tester auparavant.<br />
+Il y a bonne phrase de <a href="http://www.croes.org">Gerald Croes</a> qui <a href="http://www.croes.org/gerald/blog/nutilisez-pas-les-design-patterns-en-php/109/">dit</a> :<br />
+“N’utilisez jamais les Modèles de Conception, mais connaissez-les, 
+maîtrisez-les !”<br />
+Ce qui n’est pas totalement vrai et pas totalement faux.<br />
+Est-ce qu’il faut utiliser les Design Pattern ?<br />
+Oui, mais avant il faut les maîtriser.<br />
+Le problème étant que, jeunes fougueux que nous sommes, nous venons d’apprendre 
+un Pattern et du coup on cherche à l’implémenter à tout prix.<br />
+C’est absolument tout ce qu’il ne faut pas faire !</p>
+
+<p><img src="https://i.imgur.com/dCerM7S.gif" alt="Au bucher !" /></p>
+
+<p>En les maîtrisant, vous aurez déjà vous-même votre opinion si vous aimez tel ou 
+tel Pattern.<br />
+Chacun à ses idées sur chaque Pattern, vous en détesterez comme vous en aimerez.</p>
+
+<p>Les Patterns, en général, sont rarement utilisés isolément.<br />
+Le Pattern Iterator a souvent recours au Pattern Composite, les Patterns 
+Observer et Mediator forment un lien classique, et ainsi de suite.<br />
+Lorsque vous commencez à concevoir et programmer des Design Pattern, vous 
+découvrez rapidement que le véritable art d’utiliser des Patterns est de savoir 
+comment les combiner.</p>
+
+<p>Pour apprendre à les maîtriser et pouvoir voir les relations entre eux, il est 
+donc utile d’en assimiler certains avant d’autres.<br />
+Et certains modèles sont un peu plus complexes que d’autres.<br />
+Cela vous permettra de passer intelligemment d’un Pattern à l’autre dans le but 
+de les maîtriser.</p>
+
+<p>D’ailleurs le premier article que j’écrirai sera sur la “Factory Method”
+(Méthode d’usine).</p>
+
+<h3 id="un-peu-de-lecture-en-plus-">Un peu de lecture en plus ?</h3>
+
+<p>Vous voulez en apprendre davantage sur l’histoire des Designs Patterns  :</p>
+<ul>
+  <li><a href="http://www.bradapp.com/docs/Patterns-intro.html">http://www.bradapp.com/docs/Patterns-intro.html</a></li>
+  <li><a href="http://dirkriehle.com/computer-science/research/1996/tapos-1996-survey.pdf">http://dirkriehle.com/computer-science/research/1996/tapos-1996-survey.pdf</a></li>
+</ul>
+
+</article>
+
+
+
+
+
+
+
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname  = 'roukmoute';
+    var disqus_identifier = '/design_patterns/2017/12/15/guide_d_apprentissage_pour_concevoir_des_design_patterns';
+    var disqus_title      = "Guide d'apprentissage pour concevoir des Design Patterns";
+
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+    <small>
+      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
+      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">GitHub</a>.
+    </small>
+  </div>
+</footer>
+
+
+</body>
+</html>

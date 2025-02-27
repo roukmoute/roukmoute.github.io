@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Fondements des principes SOLID — Partie 1 &#8211; Le blog de Roukmoute</title>
+    <link rel="dns-prefetch" href="//maxcdn.bootstrapcdn.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Comment est né le principe SOLID ?">
+    <meta name="robots" content="all">
+    <meta name="author" content="Mathias STRASSER">
+    
+    <meta name="keywords" content="solid">
+    <link rel="canonical" href="http://roukmoute.github.io/solid/2018/01/26/fondements_des_principes_solid_partie1/">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for Le blog de Roukmoute" href="/feed.xml" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?202502271813" type="text/css">
+    <link rel="stylesheet" href="/css/syntax.css?202502271813" type="text/css">
+    <link rel="stylesheet" href="/css/custom.css?202502271813" type="text/css">
+
+    <!-- Fonts -->
+    
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300' rel='stylesheet' type='text/css'>
+    
+    
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    
+
+    <!-- MathJax -->
+    
+
+    <!-- Verifications -->
+    
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="fr_FR">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Fondements des principes SOLID — Partie 1">
+    <meta property="og:description" content="Je blogue sur la programmation orientée objet, PHP, bonnes pratiques, etc. ; au moins un nouveau billet chaque semaine">
+    <meta property="og:url" content="http://roukmoute.github.io/solid/2018/01/26/fondements_des_principes_solid_partie1/">
+    <meta property="og:site_name" content="Le blog de Roukmoute">
+    
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+        <meta name="twitter:site" content="@roukmouteFr" />
+        <meta name="twitter:creator" content="@roukmouteFr" />
+    
+    <meta name="twitter:title" content="Fondements des principes SOLID — Partie 1" />
+    <meta name="twitter:description" content="Comment est né le principe SOLID ?" />
+    <meta name="twitter:url" content="http://roukmoute.github.io/solid/2018/01/26/fondements_des_principes_solid_partie1/" />
+    
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+
+    
+</head>
+
+<body class="site">
+  
+	
+
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="http://roukmoute.github.io" class="site-title">Le blog de Roukmoute</a>
+      <nav class="site-nav">
+        
+
+
+
+    
+    
+    
+    
+        <a href="/about/">À propos de moi</a>
+    
+
+    
+
+
+      </nav>
+      <div class="clearfix"></div>
+      
+        <div class="social-icons">
+  <div class="social-icons-right">
+    
+      <a class="fa fa-github" href="https://github.com/roukmoute"></a>
+    
+    
+    <a class="fa fa-reddit" href="https://reddit.com/user/roukmoute"></a>
+    
+    
+    
+      <a class="fa fa-stack-overflow" href="https://stackoverflow.com/users/714996"></a>
+    
+    <a class="fa fa-rss" href="/feed.xml"></a>
+    
+      <a class="fa fa-twitter" href="https://twitter.com/roukmouteFr"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-envelope" href="mailto:contact@roukmoute.fr"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-telegram" href="https://t.me/Roukmoute"></a>
+    
+    
+  </div>
+  <div class="right">
+    
+    
+    
+  </div>
+</div>
+<div class="clearfix"></div>
+
+      
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>Fondements des principes SOLID — Partie 1</h1>
+  <span class="post-meta">26/01/2018</span><br>
+  
+  <span class="post-meta small">
+  
+    temps de lecture ≈17 min
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <p>On nous parle souvent de faire un code SOLID.<br />
+Mais au fait, de quoi s’agit-il ?</p>
+
+<p>Cet article étant long, j’ai décidé de le couper en deux.<br />
+Cela peut paraitre long, mais je pense que savoir comment est né l’acronyme 
+SOLID est important.<br />
+Il n’y a que de la théorie dans cet article.<br />
+Bonne lecture.</p>
+
+<h3 id="comment-est-née-lidée-">Comment est née l’idée ?</h3>
+
+<p>L’acronyme SOLID est né de <a href="https://www.r7krecon.com/legacy-code">Michael Feathers</a> et <a href="http://blog.cleancoder.com/">Robert C. Martin</a>.<br />
+Leur idée est venue de Jack Reeves qui a publié un article intitulé 
+<a href="https://www.developerdotstar.com/mag/articles/reeves_design.html">« What Is Software Design? »</a><br />
+La question principale étant : « Que produisent les ingénieurs ? »<br />
+Réponse: Les ingénieurs produisent des documents qui décrivent comment 
+concevoir des produits.</p>
+
+<p>Cela est vrai dans bien des domaines :</p>
+
+<ul>
+  <li>Les architectes en bâtiment produisent des documents, des plans, des schémas 
+de construction qui décrivent comment concevoir un bâtiment.</li>
+  <li>Les ingénieurs en électronique produisent des schémas de circuit électriques 
+qui décrivent comment concevoir une carte de circuit imprimé.</li>
+  <li>Les ingénieurs mécaniciens produisent des documents de dessins mécaniques qui 
+décrivent comment concevoir les machines.</li>
+</ul>
+
+<p>Et pour ce qui est du développement de logiciel, le seul document produit par 
+les ingénieurs logiciels qui est suffisamment détaillé pour spécifier un 
+produit logiciel est le code source.<br />
+Les autres documents, comme les diagrammes UML, cahier des charges, où tout 
+autre document servant à écrire le code source n’en fait pas partie.<br />
+Ils servent à déterminer le code source, pas à produire le document.<br />
+Le document finalisé chez nous sera un binaire ou un site Internet.<br />
+Le code source en est donc la conception.</p>
+
+<p>Et c’est là où il y a une conclusion très intéressante entre les ingénieurs 
+logiciels et les autres ingénieurs cités précédemment.<br />
+Dans les exemples précédents, nous passons beaucoup de temps à concevoir le 
+document, car le coût de leur conception est beaucoup moins élevé que celui 
+de la construction.<br />
+Et le coût de la correction des erreurs une fois la conception terminée et la 
+production commencée est énorme.<br />
+Mais dans le logiciel, c’est tout l’inverse, il est bien moins astronomique de 
+construire le produit qu’il ne l’est de le concevoir et de corriger les erreurs 
+avant la sortie qui est très bon marché.<br />
+En fait, même une fois fini, le coût de réparation des erreurs est beaucoup 
+moins cher que de changer les fondations d’une maison.<br />
+Pour les logiciels, le coût de construction c’est le coût de la compilation 
+ainsi que des tests.<br />
+Pour compiler un million de lignes d’application en quelques secondes, je peux 
+le tester en quelques minutes.<br />
+Enfin la résolution des problèmes à l’intérieur de celui-ci sera une question 
+d’heures.<br />
+Donc pour les logiciels, le coût de construction est bon marché.<br />
+Est-ce que si nous pouvions construire une maison pour 100 € de l’heure et en 
+même temps pouvoir effectuer des modifications nous prendrions un architecte ?<br />
+Bien sûr que non, eh bien pour le code c’est un peu pareil, voilà pourquoi le 
+développeur coûte cher.<br />
+À chaque changement que vous allez vouloir, vous allez payer le développeur 
+pour qu’il fasse ce que vous souhaitiez, maintenant que l’on sait que la 
+construction du logiciel ne prendra que quelques minutes tout au plus.<br />
+En revanche, pour une nouvelle évolution, il n’y a aucune garantie que nous 
+le concevions correctement.<br />
+Il est facile de faire évoluer un design en quelque chose qui fonctionne.<br />
+Malheureusement, il est aussi facile de le rendre difficile à modifier, 
+difficile de maintenir.<br />
+Nous savons qu’une bonne série de tests élimine la peur et nous permet de 
+garder notre code constamment propre.<br />
+Nous devons pratiquer le développement piloté par les tests (TDD) et faire 
+beaucoup d’efforts pour garder notre code toujours propre.<br />
+Le problème, c’est que pour nettoyer nos conceptions, nous devons être en 
+mesure de reconnaître quand elles tournent mal.<br />
+Il faut qu’on sache que le design sent mauvais.</p>
+
+<h3 id="quels-sont-les-symptômes-dune-mauvaise-conception-">Quels sont les symptômes d’une mauvaise conception ?</h3>
+
+<p>Comment savoir quand la conception de nos systèmes commence à se dégrader ?<br />
+Pour répondre à cette question, nous allons examiner de plus près la rigidité, 
+la fragilité, l’immobilité, la viscosité et la complexité inutile.<br />
+Comment pouvons-nous identifier ces mauvaises odeurs et les nettoyer avant 
+qu’elles ne deviennent un problème important ?<br />
+Voici donc un top 5 des symptômes d’un code qui sent mauvais, et qui nous 
+amèneront donc à faire du code dit SOLID.</p>
+
+<h4 id="rigidité">Rigidité</h4>
+
+<p>La rigidité est la tendance d’un système à être difficile à changer, même de 
+façon simple.<br />
+Qu’est-ce qui rend un système difficile à changer ?<br />
+Il est difficile de changer un système lorsque le coût du changement est élevé.
+Par exemple, si en faisant un petit changement je dois modifier toute une 
+partie de mon code, alors ce système est rigide.<br />
+Ce qui a commencé par un simple changement de deux jours en un seul module 
+devient un marathon de changement de plusieurs semaines.<br />
+Disons maintenant que vous avez un système qui nécessite trois heures pour le 
+construire et le tester.<br />
+Disons aussi que le changement le plus mineur au sous-système le moins 
+important de ce système nécessite une compilation et un test de trois heures.<br />
+Ce système est rigide.
+Plus cela se produira, plus les gestionnaires et les clients seront mal à 
+l’aise et finiront par geler le développement et plus la rigidité 
+officielle s’installera.</p>
+
+<p>Cela arrive sur deux choses :</p>
+
+<ul>
+  <li>Quand il faut beaucoup de temps pour faire un test</li>
+  <li>Quand un petit changement provoque une cascade de modifications ultérieures 
+dans les classes dépendantes.</li>
+</ul>
+
+<p>Si nous pouvions réduire considérablement le temps de construction et d’essai, 
+nous pourrions rendre le système beaucoup moins rigide et beaucoup plus facile 
+à changer.<br />
+Si nous pouvions trouver un moyen de restructurer le système de telle sorte que 
+lorsque vous l’avez modifié, vous n’auriez pas à reconstruire et à refaire tous 
+les tests.<br />
+Les changements seraient alors beaucoup plus faciles à apporter et le système 
+serait beaucoup moins rigide.</p>
+
+<p>En général, cependant, lorsque les tests prennent beaucoup de temps à 
+fonctionner, c’est une bonne indication que nous, développeurs, avons été 
+négligents.</p>
+
+<p>Lorsque de petits changements forcent la recompilation, c’est aussi le symptôme 
+d’un couplage élevé.<br />
+Et pour finir lorsque des classes sont couplées et que de minuscules 
+changements ont entraîné de revoir l’ensemble de toutes ces classes.<br />
+Par conséquent, l’un de nos objectifs de conception est de gérer les 
+dépendances entre les classes pour s’assurer que lorsqu’une classe change, 
+les autres ne sont pas affectées.</p>
+
+<h4 id="fragilité">Fragilité</h4>
+
+<p>La fragilité est étroitement liée à la rigidité.
+Un système est fragile lorsqu’une petite modification d’une classe entraîne 
+un comportement erroné d’autres classes indépendantes.<br />
+Imaginez un logiciel de domotique, ce logiciel serait fragile si, lorsque vous 
+installez un thermostat, celui-ci se met à baisser aussi lorsque vous baissez 
+les volets.<br />
+Ce genre de dépendance comportementale n’est pas bonne du tout.<br />
+Surtout du point de vue des managers et des clients qui les considèrent comme 
+des indices d’incompétence significative.<br />
+Après tout, si chaque fois que les développeurs corrigent un bug ou ajoutent 
+une nouvelle fonctionnalité, quelque chose de complètement indépendant cassé ou 
+planté, la seule conclusion à laquelle ils peuvent arriver est que nous avons 
+perdu le contrôle de notre logiciel et ne savons pas ce que nous faisons.<br />
+La méfiance règne et la crédibilité est perdue.<br />
+Ce genre de problème est toujours causé par d’étranges couplages et dépendances 
+qui serpentent à travers le système.<br />
+La solution est de gérer les dépendances entre les classes et de les isoler les 
+uns des autres.</p>
+
+<h4 id="immobilité">Immobilité</h4>
+
+<p>Un système est immobile lorsque ses composants internes ne peuvent pas être 
+facilement extraits et réutilisés dans de nouveaux environnements.<br />
+Prenons par exemple le cas d’un système dans lequel il existe une classe type 
+pour s’identifier avec un nom d’utilisateur et un mot de passe.<br />
+Si vous ne pouvez pas extraire rapidement cette classe de connexion et 
+l’utiliser dans un système complètement différent, alors cette classe est 
+immobile, elle ne peut pas être déplacée.<br />
+L’immobilisation est causée par les couplages et dépendances dans les classes 
+du système.<br />
+Cependant, il arrive aussi souvent que la classe en question ait trop de 
+paramètres dont elle dépend.<br />
+Le travail et le risque requis pour séparer les parties souhaitables du 
+logiciel des parties indésirables sont trop grands pour être tolérés.<br />
+Par exemple, disons que j’ai une classe de connexion qui utilise un schéma 
+de base de données et un schéma d’interface utilisateur particulier.<br />
+Je ne pourrais pas réutiliser cette classe de connexion dans un système 
+différent s’il avait un schéma de base de données différent et un schéma 
+d’interface utilisateur différent.<br />
+Ce module de connexion serait immobile.<br />
+Cette partie du logiciel est donc simplement réécrite au lieu d’être réutilisée.</p>
+
+<h4 id="viscosité">Viscosité</h4>
+
+<p>Le système est visqueux lorsque les opérations nécessaires comme la 
+construction et les tests sont difficiles à réaliser et prennent beaucoup de 
+temps.<br />
+C’est la résistance au changement.<br />
+La conception de nouvelles fonctionnalités qui doivent être ajoutées à travers 
+plusieurs couches du système pour traiter l’information, à travers divers 
+mécanismes comme la sérialisation ou l’hydratation.<br />
+Du coup, c’est toujours visqueux parce que, même le changement le plus simple 
+coûte cher.<br />
+La cause de la viscosité est toujours la même: la tolérance irresponsable.<br />
+Et cela porte plusieurs petits noms : <code class="language-plaintext highlighter-rouge">hacking</code>, <code class="language-plaintext highlighter-rouge">quick and dirty</code> ou encore 
+<code class="language-plaintext highlighter-rouge">quick win</code>.<br />
+C’est facile de faire la mauvaise chose, mais il est plus difficile de faire la 
+bonne chose.<br />
+Nous, les développeurs, tolérons des conditions que nous savons mauvaises et ne 
+faisons rien pour les corriger.<br />
+Le coût de ces mauvais comportements est le couplage.<br />
+Un couplage rigide rend les systèmes difficiles à construire, à tester et à 
+changer.<br />
+C’est ce couplage rigide qui rend le coût de ces opérations essentielles élevé.<br />
+Le traitement pour la viscosité est d’attaquer les symptômes en découplant les 
+classes puis en gérant les dépendances qui restent.</p>
+
+<h4 id="complexité-inutile">Complexité inutile</h4>
+
+<p>Un véritable problème commun dans les discussions sur la conception de 
+logiciels est de savoir comment gérer l’avenir.<br />
+Devrions-nous concevoir notre système que pour répondre aux exigences 
+actuelles ?<br />
+Ou bien devrions-nous envisager à long terme et anticiper toutes les exigences 
+futures du système ?<br />
+En d’autres termes, devrions-nous verrouiller pour des extensions futures ou 
+non ?<br />
+Les systèmes qui portent beaucoup d’anticipation sont inutilement complexes.<br />
+Chaque nouveauté est un autre poids ajouté au système auquel nous devons faire 
+attention dans le présent.<br />
+Lorsque vous avez peur de votre code et que vous pensez qu’il est difficile et 
+coûteux de le modifier, vous allez alors l’intégrer à votre code avec toutes 
+sortes d’éléments de conception anticipatifs.<br />
+Pour que vous n’ayez pas à changer le design plus tard.<br />
+Par contre, suivre une règle simple comme le TDD, vous n’aurez pas peur de 
+changer le code.<br />
+Vous n’aurez pas besoin de jongler avec un tas d’éléments anticipatifs, vos 
+designs seront plus simples, plus faciles à entretenir et ils ne seront pas 
+inutilement complexes.<br />
+La complexité inutile conduit souvent à un couplage fort, car nous anticipons le 
+besoin futur de relations entre des classes qui ne sont pas liées actuellement.<br />
+Plus nous anticipons de telles relations futures, plus le logiciel devient 
+étroitement couplé.<br />
+La solution, bien sûr, est de garder votre conception axée sur la suite 
+actuelle des exigences tout en maintenant une suite complète de tests qui 
+réduit votre crainte de changer la conception plus tard.<br />
+Personne ne commence à concevoir un système qui sent mauvais.<br />
+Les mauvaises odeurs s’accumulent au fil du temps.<br />
+Elles sont causées par une série de mauvaises décisions motivées par 
+l’insouciance, la peur et de fausses opportunités.<br />
+Plus le désordre est grand, plus il est difficile de progresser, plus tout 
+devient difficile.<br />
+Et plus la tentation est grande de prendre le genre de raccourcis qui 
+augmentent le désordre.<br />
+Vous aurez peut-être déjà entendu les termes YAGNI (You Ain’t Gonna Need It) et 
+KISS (Keep It Simple Stupid).  <br />
+Attention toutefois à ne pas confondre <code class="language-plaintext highlighter-rouge">Simple</code> et <code class="language-plaintext highlighter-rouge">Simpliste</code>.</p>
+
+<h3 id="conclusion">Conclusion</h3>
+
+<p>Voilà pour la première partie de cet article.<br />
+Ces cinq symptômes sont les signes révélateurs d’une mauvaise architecture.<br />
+Toute application qui les expose souffre d’un design qui pourrit de l’intérieur 
+vers l’extérieur.</p>
+
+<h5 id="mais-quest-ce-qui-cause-cette-pourriture">Mais qu’est-ce qui cause cette pourriture?</h5>
+
+<p>Ce sera le but du prochain article.<br />
+Pour cela nous regarderons un code qui pourrit.<br />
+Nous commencerons avec un design agréable et propre et regardons changement 
+après changement une dégradation de ce design en une sorte de tumeur qui se 
+répand.<br />
+Ensuite, nous étudierons une conception alternative qui ne pourrit pas lorsque 
+les mêmes changements sont appliqués.<br />
+Nous étudierons la différence entre ces deux conceptions et découvrirons le 
+principe qui sous-tend tout le design orienté objet.<br />
+Nous plongerons plus profondément dans l’histoire de l’Orienté Objet (OO), et 
+en déduirons une nouvelle définition sans ambiguïté de l’OO basée sur la 
+gestion des dépendances.<br />
+Enfin, nous jetterons un bref coup d’œil aux principes S.O.L.I.D. qui seront 
+bien plus développés dans de prochains articles.</p>
+
+</article>
+
+
+
+
+
+
+
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname  = 'roukmoute';
+    var disqus_identifier = '/solid/2018/01/26/fondements_des_principes_solid_partie1';
+    var disqus_title      = "Fondements des principes SOLID — Partie 1";
+
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+    <small>
+      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
+      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">GitHub</a>.
+    </small>
+  </div>
+</footer>
+
+
+</body>
+</html>
