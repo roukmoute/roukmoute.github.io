@@ -1,0 +1,398 @@
+{
+  "schemaVersion": 1,
+  "origin": "https://roukmoute.github.io",
+  "revision": "126d41d23855e6bf259005ea28e5b816d667e047",
+  "defaultLanguage": "fr",
+  "languages": [
+    "en",
+    "fr"
+  ],
+  "timezone": "Europe/Paris",
+  "asOf": "2026-10-14",
+  "previewDrafts": false,
+  "articles": [],
+  "pages": {
+    "en/index.html": {
+      "route": "/en/",
+      "language": "en",
+      "kind": "home",
+      "counterpart": "/",
+      "article": null
+    },
+    "en/404.html": {
+      "route": "/en/404.html",
+      "language": "en",
+      "kind": "404",
+      "counterpart": "/404.html",
+      "article": null
+    },
+    "en/autre/2017/12/01/first-post/index.html": {
+      "route": "/en/autre/2017/12/01/first-post/",
+      "language": "en",
+      "kind": "retired",
+      "counterpart": "/autre/2017/12/01/first-post/",
+      "article": null
+    },
+    "en/php/2017/12/07/php_7_2_libsodium/index.html": {
+      "route": "/en/php/2017/12/07/php_7_2_libsodium/",
+      "language": "en",
+      "kind": "retired",
+      "counterpart": "/php/2017/12/07/php_7_2_libsodium/",
+      "article": null
+    },
+    "en/design_patterns/2017/12/15/guide_d_apprentissage_pour_concevoir_des_design_patterns/index.html": {
+      "route": "/en/design_patterns/2017/12/15/guide_d_apprentissage_pour_concevoir_des_design_patterns/",
+      "language": "en",
+      "kind": "retired",
+      "counterpart": "/design_patterns/2017/12/15/guide_d_apprentissage_pour_concevoir_des_design_patterns/",
+      "article": null
+    },
+    "en/php/spl/2017/12/16/introduction_a_la_SPL/index.html": {
+      "route": "/en/php/spl/2017/12/16/introduction_a_la_SPL/",
+      "language": "en",
+      "kind": "retired",
+      "counterpart": "/php/spl/2017/12/16/introduction_a_la_SPL/",
+      "article": null
+    },
+    "en/programmation/2017/12/23/polymorphisme/index.html": {
+      "route": "/en/programmation/2017/12/23/polymorphisme/",
+      "language": "en",
+      "kind": "retired",
+      "counterpart": "/programmation/2017/12/23/polymorphisme/",
+      "article": null
+    },
+    "en/design_patterns/2017/12/30/factory_method_les_fondements/index.html": {
+      "route": "/en/design_patterns/2017/12/30/factory_method_les_fondements/",
+      "language": "en",
+      "kind": "retired",
+      "counterpart": "/design_patterns/2017/12/30/factory_method_les_fondements/",
+      "article": null
+    },
+    "en/solid/2018/01/26/fondements_des_principes_solid_partie1/index.html": {
+      "route": "/en/solid/2018/01/26/fondements_des_principes_solid_partie1/",
+      "language": "en",
+      "kind": "retired",
+      "counterpart": "/solid/2018/01/26/fondements_des_principes_solid_partie1/",
+      "article": null
+    },
+    "en/design_pattern/php/2018/02/11/factory_method_exemple/index.html": {
+      "route": "/en/design_pattern/php/2018/02/11/factory_method_exemple/",
+      "language": "en",
+      "kind": "retired",
+      "counterpart": "/design_pattern/php/2018/02/11/factory_method_exemple/",
+      "article": null
+    },
+    "en/design_pattern/php/2025/01/01/test/index.html": {
+      "route": "/en/design_pattern/php/2025/01/01/test/",
+      "language": "en",
+      "kind": "retired",
+      "counterpart": "/design_pattern/php/2025/01/01/test/",
+      "article": null
+    },
+    "en/about/index.html": {
+      "route": "/en/about/",
+      "language": "en",
+      "kind": "retired",
+      "counterpart": "/about/",
+      "article": null
+    },
+    "en/contact/index.html": {
+      "route": "/en/contact/",
+      "language": "en",
+      "kind": "retired",
+      "counterpart": "/contact/",
+      "article": null
+    },
+    "en/page2/index.html": {
+      "route": "/en/page2/",
+      "language": "en",
+      "kind": "retired",
+      "counterpart": "/page2/",
+      "article": null
+    },
+    "en/page3/index.html": {
+      "route": "/en/page3/",
+      "language": "en",
+      "kind": "retired",
+      "counterpart": "/page3/",
+      "article": null
+    },
+    "index.html": {
+      "route": "/",
+      "language": "fr",
+      "kind": "home",
+      "counterpart": "/en/",
+      "article": null
+    },
+    "404.html": {
+      "route": "/404.html",
+      "language": "fr",
+      "kind": "404",
+      "counterpart": "/en/404.html",
+      "article": null
+    },
+    "autre/2017/12/01/first-post/index.html": {
+      "route": "/autre/2017/12/01/first-post/",
+      "language": "fr",
+      "kind": "retired",
+      "counterpart": "/en/autre/2017/12/01/first-post/",
+      "article": null
+    },
+    "php/2017/12/07/php_7_2_libsodium/index.html": {
+      "route": "/php/2017/12/07/php_7_2_libsodium/",
+      "language": "fr",
+      "kind": "retired",
+      "counterpart": "/en/php/2017/12/07/php_7_2_libsodium/",
+      "article": null
+    },
+    "design_patterns/2017/12/15/guide_d_apprentissage_pour_concevoir_des_design_patterns/index.html": {
+      "route": "/design_patterns/2017/12/15/guide_d_apprentissage_pour_concevoir_des_design_patterns/",
+      "language": "fr",
+      "kind": "retired",
+      "counterpart": "/en/design_patterns/2017/12/15/guide_d_apprentissage_pour_concevoir_des_design_patterns/",
+      "article": null
+    },
+    "php/spl/2017/12/16/introduction_a_la_SPL/index.html": {
+      "route": "/php/spl/2017/12/16/introduction_a_la_SPL/",
+      "language": "fr",
+      "kind": "retired",
+      "counterpart": "/en/php/spl/2017/12/16/introduction_a_la_SPL/",
+      "article": null
+    },
+    "programmation/2017/12/23/polymorphisme/index.html": {
+      "route": "/programmation/2017/12/23/polymorphisme/",
+      "language": "fr",
+      "kind": "retired",
+      "counterpart": "/en/programmation/2017/12/23/polymorphisme/",
+      "article": null
+    },
+    "design_patterns/2017/12/30/factory_method_les_fondements/index.html": {
+      "route": "/design_patterns/2017/12/30/factory_method_les_fondements/",
+      "language": "fr",
+      "kind": "retired",
+      "counterpart": "/en/design_patterns/2017/12/30/factory_method_les_fondements/",
+      "article": null
+    },
+    "solid/2018/01/26/fondements_des_principes_solid_partie1/index.html": {
+      "route": "/solid/2018/01/26/fondements_des_principes_solid_partie1/",
+      "language": "fr",
+      "kind": "retired",
+      "counterpart": "/en/solid/2018/01/26/fondements_des_principes_solid_partie1/",
+      "article": null
+    },
+    "design_pattern/php/2018/02/11/factory_method_exemple/index.html": {
+      "route": "/design_pattern/php/2018/02/11/factory_method_exemple/",
+      "language": "fr",
+      "kind": "retired",
+      "counterpart": "/en/design_pattern/php/2018/02/11/factory_method_exemple/",
+      "article": null
+    },
+    "design_pattern/php/2025/01/01/test/index.html": {
+      "route": "/design_pattern/php/2025/01/01/test/",
+      "language": "fr",
+      "kind": "retired",
+      "counterpart": "/en/design_pattern/php/2025/01/01/test/",
+      "article": null
+    },
+    "about/index.html": {
+      "route": "/about/",
+      "language": "fr",
+      "kind": "retired",
+      "counterpart": "/en/about/",
+      "article": null
+    },
+    "contact/index.html": {
+      "route": "/contact/",
+      "language": "fr",
+      "kind": "retired",
+      "counterpart": "/en/contact/",
+      "article": null
+    },
+    "page2/index.html": {
+      "route": "/page2/",
+      "language": "fr",
+      "kind": "retired",
+      "counterpart": "/en/page2/",
+      "article": null
+    },
+    "page3/index.html": {
+      "route": "/page3/",
+      "language": "fr",
+      "kind": "retired",
+      "counterpart": "/en/page3/",
+      "article": null
+    },
+    "fr/index.html": {
+      "route": "/fr/",
+      "language": "fr",
+      "kind": "alias",
+      "counterpart": "/en/",
+      "article": null,
+      "target": "/"
+    },
+    "fr/404.html": {
+      "route": "/fr/404.html",
+      "language": "fr",
+      "kind": "alias",
+      "counterpart": "/en/404.html",
+      "article": null,
+      "target": "/404.html"
+    },
+    "fr/autre/2017/12/01/first-post/index.html": {
+      "route": "/fr/autre/2017/12/01/first-post/",
+      "language": "fr",
+      "kind": "alias",
+      "counterpart": "/en/autre/2017/12/01/first-post/",
+      "article": null,
+      "target": "/autre/2017/12/01/first-post/"
+    },
+    "fr/php/2017/12/07/php_7_2_libsodium/index.html": {
+      "route": "/fr/php/2017/12/07/php_7_2_libsodium/",
+      "language": "fr",
+      "kind": "alias",
+      "counterpart": "/en/php/2017/12/07/php_7_2_libsodium/",
+      "article": null,
+      "target": "/php/2017/12/07/php_7_2_libsodium/"
+    },
+    "fr/design_patterns/2017/12/15/guide_d_apprentissage_pour_concevoir_des_design_patterns/index.html": {
+      "route": "/fr/design_patterns/2017/12/15/guide_d_apprentissage_pour_concevoir_des_design_patterns/",
+      "language": "fr",
+      "kind": "alias",
+      "counterpart": "/en/design_patterns/2017/12/15/guide_d_apprentissage_pour_concevoir_des_design_patterns/",
+      "article": null,
+      "target": "/design_patterns/2017/12/15/guide_d_apprentissage_pour_concevoir_des_design_patterns/"
+    },
+    "fr/php/spl/2017/12/16/introduction_a_la_SPL/index.html": {
+      "route": "/fr/php/spl/2017/12/16/introduction_a_la_SPL/",
+      "language": "fr",
+      "kind": "alias",
+      "counterpart": "/en/php/spl/2017/12/16/introduction_a_la_SPL/",
+      "article": null,
+      "target": "/php/spl/2017/12/16/introduction_a_la_SPL/"
+    },
+    "fr/programmation/2017/12/23/polymorphisme/index.html": {
+      "route": "/fr/programmation/2017/12/23/polymorphisme/",
+      "language": "fr",
+      "kind": "alias",
+      "counterpart": "/en/programmation/2017/12/23/polymorphisme/",
+      "article": null,
+      "target": "/programmation/2017/12/23/polymorphisme/"
+    },
+    "fr/design_patterns/2017/12/30/factory_method_les_fondements/index.html": {
+      "route": "/fr/design_patterns/2017/12/30/factory_method_les_fondements/",
+      "language": "fr",
+      "kind": "alias",
+      "counterpart": "/en/design_patterns/2017/12/30/factory_method_les_fondements/",
+      "article": null,
+      "target": "/design_patterns/2017/12/30/factory_method_les_fondements/"
+    },
+    "fr/solid/2018/01/26/fondements_des_principes_solid_partie1/index.html": {
+      "route": "/fr/solid/2018/01/26/fondements_des_principes_solid_partie1/",
+      "language": "fr",
+      "kind": "alias",
+      "counterpart": "/en/solid/2018/01/26/fondements_des_principes_solid_partie1/",
+      "article": null,
+      "target": "/solid/2018/01/26/fondements_des_principes_solid_partie1/"
+    },
+    "fr/design_pattern/php/2018/02/11/factory_method_exemple/index.html": {
+      "route": "/fr/design_pattern/php/2018/02/11/factory_method_exemple/",
+      "language": "fr",
+      "kind": "alias",
+      "counterpart": "/en/design_pattern/php/2018/02/11/factory_method_exemple/",
+      "article": null,
+      "target": "/design_pattern/php/2018/02/11/factory_method_exemple/"
+    },
+    "fr/design_pattern/php/2025/01/01/test/index.html": {
+      "route": "/fr/design_pattern/php/2025/01/01/test/",
+      "language": "fr",
+      "kind": "alias",
+      "counterpart": "/en/design_pattern/php/2025/01/01/test/",
+      "article": null,
+      "target": "/design_pattern/php/2025/01/01/test/"
+    },
+    "fr/about/index.html": {
+      "route": "/fr/about/",
+      "language": "fr",
+      "kind": "alias",
+      "counterpart": "/en/about/",
+      "article": null,
+      "target": "/about/"
+    },
+    "fr/contact/index.html": {
+      "route": "/fr/contact/",
+      "language": "fr",
+      "kind": "alias",
+      "counterpart": "/en/contact/",
+      "article": null,
+      "target": "/contact/"
+    },
+    "fr/page2/index.html": {
+      "route": "/fr/page2/",
+      "language": "fr",
+      "kind": "alias",
+      "counterpart": "/en/page2/",
+      "article": null,
+      "target": "/page2/"
+    },
+    "fr/page3/index.html": {
+      "route": "/fr/page3/",
+      "language": "fr",
+      "kind": "alias",
+      "counterpart": "/en/page3/",
+      "article": null,
+      "target": "/page3/"
+    }
+  },
+  "assets": [
+    {
+      "path": ".nojekyll",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "assets/favicon.svg",
+      "bytes": 223,
+      "sha256": "c2f23a95162c165943a0edb0532644b33bb9a0d4d0f4c3a319d24a05759f9976"
+    },
+    {
+      "path": "assets/site.css",
+      "bytes": 9510,
+      "sha256": "ac87cd99814e2adfc051f4fd7c57c4d11f76e6d3f16d01a96d8f6c2c23306b45"
+    },
+    {
+      "path": "assets/site.js",
+      "bytes": 1988,
+      "sha256": "42fc69cef1dfe8e61409e1f402361f15b61114265c1b11c205381c215b882431"
+    },
+    {
+      "path": "en/feed.xml",
+      "bytes": 495,
+      "sha256": "0905caccdba39a6e0eed38f9ad2ec7ab6aeff63570fe43a7d0f101bb9c5cc36c"
+    },
+    {
+      "path": "feed.xml",
+      "bytes": 493,
+      "sha256": "0e3cefd3035dbd72f1defe7560417461f164b465551bbc53e94e7c1aedd962c0"
+    },
+    {
+      "path": "fr/feed.xml",
+      "bytes": 496,
+      "sha256": "9f16dc0dc6bf2da160c33c66a2d7a31e9bb80937da459afd124399a246796836"
+    },
+    {
+      "path": "images/me.jpeg",
+      "bytes": 38186,
+      "sha256": "99540cf824a646a9ad0cf8ab1bbbfaeafdd1cf24a252db13b6b03685445c1250"
+    },
+    {
+      "path": "robots.txt",
+      "bytes": 72,
+      "sha256": "18a4e9c06e60cafe144ab0981dd3fdc6771acfa192e660a24793053ac2a55b47"
+    },
+    {
+      "path": "sitemap.xml",
+      "bytes": 270,
+      "sha256": "c33a6ea7598160e1e6f2d244d3c62bc61448bd2022e023fdf9bf52eaad211612"
+    }
+  ]
+}
