@@ -1,14 +1,14 @@
 {
   "schemaVersion": 1,
   "origin": "https://roukmoute.github.io",
-  "revision": "320b66192d051d44cadacf46554f1bd671e6c353",
+  "revision": "5751b5b63aa53878c1ec9dc7cc4a2ac914dd767c",
   "defaultLanguage": "fr",
   "languages": [
     "en",
     "fr"
   ],
   "timezone": "Europe/Paris",
-  "asOf": "2026-10-15",
+  "asOf": "2026-10-16",
   "previewDrafts": false,
   "articles": [],
   "pages": {
@@ -367,17 +367,17 @@
     {
       "path": "en/feed.xml",
       "bytes": 495,
-      "sha256": "9eb06648f98e1a50da89c20dda3c4d41654755c03cdbcf175b9279de7e7bc2bc"
+      "sha256": "a52626dc61a44e9eb8e0bc61645f8a05fcc4eea0a651013be4731e5d9a6060f5"
     },
     {
       "path": "feed.xml",
       "bytes": 493,
-      "sha256": "bfdac099d63afbea804c77a636baa5dc2650034bf351bb5ec19e5c88769b041e"
+      "sha256": "edf7930bf3b3a6bfa4122a49159bb194260cdaec7e18448a1919d1fb819c44a8"
     },
     {
       "path": "fr/feed.xml",
       "bytes": 496,
-      "sha256": "5f74381e91f741e22a94f413ec2574720a69cf71aa39b95b7413d41481ab6a6d"
+      "sha256": "12b54e050f73eb0912eb736169356b71db0c734022d85f2e6adfb232031caf64"
     },
     {
       "path": "images/me.jpeg",
@@ -392,7 +392,7 @@
     {
       "path": "sitemap.xml",
       "bytes": 270,
-      "sha256": "c20af25e45967217577292d61cfe5a482660195e154333376511054c22272112"
+      "sha256": "9276e4dae00cd51dc151ed2ade9b34601732c9e02273c5e7517915233e48d43b"
     }
   ]
 }
