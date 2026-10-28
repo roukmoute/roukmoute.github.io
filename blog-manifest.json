@@ -8,7 +8,7 @@
     "fr"
   ],
   "timezone": "Europe/Paris",
-  "asOf": "2026-10-21",
+  "asOf": "2026-10-28",
   "previewDrafts": false,
   "articles": [],
   "pages": {
@@ -367,17 +367,17 @@
     {
       "path": "en/feed.xml",
       "bytes": 495,
-      "sha256": "7b0e4b99fa5cea34911e9be695c2f2da0e6d4e4225ae6eba0d1dbcc9d445c888"
+      "sha256": "40131c405b334940d31f3b3eefb0fd87f99d8cc78e9e2ce834779232f99d905c"
     },
     {
       "path": "feed.xml",
       "bytes": 493,
-      "sha256": "a54dceb7994fa034d6cfa74599ebcf2751a88e8f36f61bddab1432a74c5e3954"
+      "sha256": "bb21bd41a2d3404ed2bfa1523da5809ad1071886fd9228f4e9db976e47b86bae"
     },
     {
       "path": "fr/feed.xml",
       "bytes": 496,
-      "sha256": "3e2ab7c231e700d0c524a09a4e2f2451392055238062982ac731e2a6fc8decad"
+      "sha256": "f73af236bb35802da95c76e7d89fc4ecd1d83e2b5c112c47a3d5fdb480d1482a"
     },
     {
       "path": "images/me.jpeg",
@@ -392,7 +392,7 @@
     {
       "path": "sitemap.xml",
       "bytes": 270,
-      "sha256": "0c488f5c9553baa8a0558ffa4c783ac3eac040fdebc78afc026344b709447ee5"
+      "sha256": "d3b29cdfd4e6715ffcc3b8ba8eb9e0fec4ca4e67db2a78c23ef7e875ef7c9e74"
     }
   ]
 }
